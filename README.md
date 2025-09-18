@@ -8,7 +8,7 @@ Convert amounts between multiple currencies with **real-time exchange rates**, s
 
 ### 🖼 Screenshot
 
-![Currency Converter Screenshot](currency_converter.png)
+![Currency Converter Screenshot](currency_converter.jpg)
 
 ---
 
