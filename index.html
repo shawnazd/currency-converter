@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom right, #eef2ff, #d1d5db);
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-height: 260px;
+            overflow-y: auto;
+            display: none;
+            z-index: 50;
+        }
+
+        .dropdown li {
+            cursor: pointer;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .dropdown li:hover {
+            background-color: #f3f4f6;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            outline: none;
+        }
+
+        /* Custom scrollbar styles */
+        .dropdown::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .dropdown::-webkit-scrollbar-thumb {
+            background-color: #d1d5db;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+    <!-- Main Content -->
+    <div class="flex-1 flex items-center justify-center p-4">
+        <div class="max-w-3xl w-full bg-white p-10 rounded-3xl shadow-2xl transition-all duration-500 hover:shadow-3xl">
+            <h1 class="text-4xl font-extrabold text-center text-indigo-800 mb-8">💱 Currency Converter</h1>
+
+            <!-- Amount Input -->
+            <div class="mb-6">
+                <label for="amount" class="block text-gray-700 font-semibold mb-2">Amount</label>
+                <input type="number" id="amount"
+                    class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all duration-300"
+                    placeholder="Enter amount">
+            </div>
+
+            <!-- Currency Selectors -->
+            <div class="flex items-center gap-6 mb-6">
+                <!-- From -->
+                <div class="flex-1 relative">
+                    <label class="block text-gray-700 font-semibold mb-2">From</label>
+                    <div class="border rounded-xl p-4 flex items-center justify-between cursor-pointer bg-white hover:ring-2 hover:ring-indigo-400 transition min-w-[200px]"
+                        id="from-selector">
+                        <span class="flex items-center gap-3 whitespace-nowrap" id="from-selected"></span>
+                        <span class="text-gray-500">▼</span>
+                    </div>
+                    <div class="dropdown" id="from-dropdown-list">
+                        <input type="text" placeholder="Search..." class="search-input" id="from-search">
+                        <ul class="py-1" id="from-currency-list"></ul>
+                    </div>
+                </div>
+
+                <!-- Swap Button -->
+                <button id="swap-btn"
+                    class="mt-8 p-3 bg-indigo-500 hover:bg-indigo-600 rounded-full transition-transform duration-300 text-white font-bold text-2xl shadow-md transform hover:scale-110 active:scale-95">
+                    🔄
+                </button>
+
+                <!-- To -->
+                <div class="flex-1 relative">
+                    <label class="block text-gray-700 font-semibold mb-2">To</label>
+                    <div class="border rounded-xl p-4 flex items-center justify-between cursor-pointer bg-white hover:ring-2 hover:ring-indigo-400 transition min-w-[200px]"
+                        id="to-selector">
+                        <span class="flex items-center gap-3 whitespace-nowrap" id="to-selected"></span>
+                        <span class="text-gray-500">▼</span>
+                    </div>
+                    <div class="dropdown" id="to-dropdown-list">
+                        <input type="text" placeholder="Search..." class="search-input" id="to-search">
+                        <ul class="py-1" id="to-currency-list"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Convert Button -->
+            <button id="convert-btn"
+                class="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                Convert
+            </button>
+
+            <!-- Result -->
+            <div id="result-container"
+                class="hidden mt-8 p-6 bg-purple-50 border border-purple-200 rounded-xl text-center shadow-inner">
+                <p id="result-text" class="text-xl font-bold text-purple-800"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const CURRENCIES = {
+                "AED": { country: "United Arab Emirates", code: "ae" },
+                "AFN": { country: "Afghanistan", code: "af" },
+                "ALL": { country: "Albania", code: "al" },
+                "AMD": { country: "Armenia", code: "am" },
+                "ANG": { country: "Netherlands Antilles", code: "an" },
+                "AOA": { country: "Angola", code: "ao" },
+                "ARS": { country: "Argentina", code: "ar" },
+                "AUD": { country: "Australia", code: "au" },
+                "AWG": { country: "Aruba", code: "aw" },
+                "AZN": { country: "Azerbaijan", code: "az" },
+                "BAM": { country: "Bosnia and Herzegovina", code: "ba" },
+                "BBD": { country: "Barbados", code: "bb" },
+                "BDT": { country: "Bangladesh", code: "bd" },
+                "BGN": { country: "Bulgaria", code: "bg" },
+                "BHD": { country: "Bahrain", code: "bh" },
+                "BIF": { country: "Burundi", code: "bi" },
+                "BMD": { country: "Bermuda", code: "bm" },
+                "BND": { country: "Brunei", code: "bn" },
+                "BOB": { country: "Bolivia", code: "bo" },
+                "BRL": { country: "Brazil", code: "br" },
+                "BSD": { country: "Bahamas", code: "bs" },
+                "BTN": { country: "Bhutan", code: "bt" },
+                "BWP": { country: "Botswana", code: "bw" },
+                "BYN": { country: "Belarus", code: "by" },
+                "BZD": { country: "Belize", code: "bz" },
+                "CAD": { country: "Canada", code: "ca" },
+                "CDF": { country: "DR Congo", code: "cd" },
+                "CHF": { country: "Switzerland", code: "ch" },
+                "CLP": { country: "Chile", code: "cl" },
+                "CNY": { country: "China", code: "cn" },
+                "COP": { country: "Colombia", code: "co" },
+                "CRC": { country: "Costa Rica", code: "cr" },
+                "CUC": { country: "Cuba", code: "cu" },
+                "CUP": { country: "Cuba", code: "cu" },
+                "CVE": { country: "Cape Verde", code: "cv" },
+                "CZK": { country: "Czech Republic", code: "cz" },
+                "DJF": { country: "Djibouti", code: "dj" },
+                "DKK": { country: "Denmark", code: "dk" },
+                "DOP": { country: "Dominican Republic", code: "do" },
+                "DZD": { country: "Algeria", code: "dz" },
+                "EGP": { country: "Egypt", code: "eg" },
+                "ERN": { country: "Eritrea", code: "er" },
+                "ETB": { country: "Ethiopia", code: "et" },
+                "EUR": { country: "European Union", code: "eu" },
+                "FJD": { country: "Fiji", code: "fj" },
+                "FKP": { country: "Falkland Islands", code: "fk" },
+                "GBP": { country: "United Kingdom", code: "gb" },
+                "GEL": { country: "Georgia", code: "ge" },
+                "GHS": { country: "Ghana", code: "gh" },
+                "GIP": { country: "Gibraltar", code: "gi" },
+                "GMD": { country: "Gambia", code: "gm" },
+                "GNF": { country: "Guinea", code: "gn" },
+                "GTQ": { country: "Guatemala", code: "gt" },
+                "GYD": { country: "Guyana", code: "gy" },
+                "HKD": { country: "Hong Kong", code: "hk" },
+                "HNL": { country: "Honduras", code: "hn" },
+                "HRK": { country: "Croatia", code: "hr" },
+                "HTG": { country: "Haiti", code: "ht" },
+                "HUF": { country: "Hungary", code: "hu" },
+                "IDR": { country: "Indonesia", code: "id" },
+                "ILS": { country: "Israel", code: "il" },
+                "INR": { country: "India", code: "in" },
+                "IQD": { country: "Iraq", code: "iq" },
+                "IRR": { country: "Iran", code: "ir" },
+                "ISK": { country: "Iceland", code: "is" },
+                "JMD": { country: "Jamaica", code: "jm" },
+                "JOD": { country: "Jordan", code: "jo" },
+                "JPY": { country: "Japan", code: "jp" },
+                "KES": { country: "Kenya", code: "ke" },
+                "KGS": { country: "Kyrgyzstan", code: "kg" },
+                "KHR": { country: "Cambodia", code: "kh" },
+                "KMF": { country: "Comoros", code: "km" },
+                "KPW": { country: "North Korea", code: "kp" },
+                "KRW": { country: "South Korea", code: "kr" },
+                "KWD": { country: "Kuwait", code: "kw" },
+                "KYD": { country: "Cayman Islands", code: "ky" },
+                "KZT": { country: "Kazakhstan", code: "kz" },
+                "LAK": { country: "Laos", code: "la" },
+                "LBP": { country: "Lebanon", code: "lb" },
+                "LKR": { country: "Sri Lanka", code: "lk" },
+                "LRD": { country: "Liberia", code: "lr" },
+                "LSL": { country: "Lesotho", code: "ls" },
+                "LYD": { country: "Libya", code: "ly" },
+                "MAD": { country: "Morocco", code: "ma" },
+                "MDL": { country: "Moldova", code: "md" },
+                "MGA": { country: "Madagascar", code: "mg" },
+                "MKD": { country: "North Macedonia", code: "mk" },
+                "MMK": { country: "Myanmar", code: "mm" },
+                "MNT": { country: "Mongolia", code: "mn" },
+                "MOP": { country: "Macau", code: "mo" },
+                "MRO": { country: "Mauritania", code: "mr" },
+                "MUR": { country: "Mauritius", code: "mu" },
+                "MVR": { country: "Maldives", code: "mv" },
+                "MWK": { country: "Malawi", code: "mw" },
+                "MXN": { country: "Mexico", code: "mx" },
+                "MYR": { country: "Malaysia", code: "my" },
+                "MZN": { country: "Mozambique", code: "mz" },
+                "NAD": { country: "Namibia", code: "na" },
+                "NGN": { country: "Nigeria", code: "ng" },
+                "NIO": { country: "Nicaragua", code: "ni" },
+                "NOK": { country: "Norway", code: "no" },
+                "NPR": { country: "Nepal", code: "np" },
+                "NZD": { country: "New Zealand", code: "nz" },
+                "OMR": { country: "Oman", code: "om" },
+                "PAB": { country: "Panama", code: "pa" },
+                "PEN": { country: "Peru", code: "pe" },
+                "PGK": { country: "Papua New Guinea", code: "pg" },
+                "PHP": { country: "Philippines", code: "ph" },
+                "PKR": { country: "Pakistan", code: "pk" },
+                "PLN": { country: "Poland", code: "pl" },
+                "PYG": { country: "Paraguay", code: "py" },
+                "QAR": { country: "Qatar", code: "qa" },
+                "RON": { country: "Romania", code: "ro" },
+                "RSD": { country: "Serbia", code: "rs" },
+                "RUB": { country: "Russia", code: "ru" },
+                "RWF": { country: "Rwanda", code: "rw" },
+                "SAR": { country: "Saudi Arabia", code: "sa" },
+                "SBD": { country: "Solomon Islands", code: "sb" },
+                "SCR": { country: "Seychelles", code: "sc" },
+                "SDG": { country: "Sudan", code: "sd" },
+                "SEK": { country: "Sweden", code: "se" },
+                "SGD": { country: "Singapore", code: "sg" },
+                "SLL": { country: "Sierra Leone", code: "sl" },
+                "SOS": { country: "Somalia", code: "so" },
+                "SRD": { country: "Suriname", code: "sr" },
+                "SSP": { country: "South Sudan", code: "ss" },
+                "STD": { country: "Sao Tome and Principe", code: "st" },
+                "SYP": { country: "Syria", code: "sy" },
+                "SZL": { country: "Eswatini", code: "sz" },
+                "THB": { country: "Thailand", code: "th" },
+                "TJS": { country: "Tajikistan", code: "tj" },
+                "TMT": { country: "Turkmenistan", code: "tm" },
+                "TND": { country: "Tunisia", code: "tn" },
+                "TOP": { country: "Tonga", code: "to" },
+                "TRY": { country: "Turkey", code: "tr" },
+                "TTD": { country: "Trinidad and Tobago", code: "tt" },
+                "TWD": { country: "Taiwan", code: "tw" },
+                "TZS": { country: "Tanzania", code: "tz" },
+                "UAH": { country: "Ukraine", code: "ua" },
+                "UGX": { country: "Uganda", code: "ug" },
+                "USD": { country: "United States", code: "us" },
+                "UYU": { country: "Uruguay", code: "uy" },
+                "UZS": { country: "Uzbekistan", code: "uz" },
+                "VEF": { country: "Venezuela", code: "ve" },
+                "VND": { country: "Vietnam", code: "vn" },
+                "VUV": { country: "Vanuatu", code: "vu" },
+                "WST": { country: "Samoa", code: "ws" },
+                "XAF": { country: "Central African Republic", code: "cf" },
+                "XCD": { country: "Eastern Caribbean", code: "vc" },
+                "XOF": { country: "West African Republic", code: "bf" },
+                "XPF": { country: "French Polynesia", code: "pf" },
+                "YER": { country: "Yemen", code: "ye" },
+                "ZAR": { country: "South Africa", code: "za" },
+                "ZMW": { country: "Zambia", code: "zm" },
+                "ZWD": { country: "Zimbabwe", code: "zw" }
+            };
+
+            const FLAG_URL = code => `https://flagcdn.com/w40/${code}.png`;
+
+            const fromSelector = document.getElementById("from-selector");
+            const toSelector = document.getElementById("to-selector");
+            const fromList = document.getElementById("from-currency-list");
+            const toList = document.getElementById("to-currency-list");
+            const fromDropdown = document.getElementById("from-dropdown-list");
+            const toDropdown = document.getElementById("to-dropdown-list");
+            const fromSelected = document.getElementById("from-selected");
+            const toSelected = document.getElementById("to-selected");
+            const amountInput = document.getElementById("amount");
+            const convertBtn = document.getElementById("convert-btn");
+            const resultContainer = document.getElementById("result-container");
+            const resultText = document.getElementById("result-text");
+            const fromSearch = document.getElementById("from-search");
+            const toSearch = document.getElementById("to-search");
+
+            let exchangeRates = {};
+            let fromCurrency = "USD";
+            let toCurrency = "EUR";
+
+            // Fetch rates
+            async function fetchRates(base) {
+                try {
+                    const res = await fetch(`https://open.er-api.com/v6/latest/${base}`);
+                    if (!res.ok) throw new Error("Failed to fetch exchange rates");
+                    const data = await res.json();
+                    exchangeRates = data.rates;
+                } catch (error) {
+                    console.error("Error fetching rates:", error);
+                }
+            }
+
+            // Render dropdown items
+            function renderDropdown(listElement, searchTerm, selectCallback) {
+                listElement.innerHTML = "";
+                const term = searchTerm.toLowerCase();
+
+                const items = Object.keys(CURRENCIES)
+                    .filter(code => code.toLowerCase().includes(term) || CURRENCIES[code].country.toLowerCase().includes(term))
+                    .sort();
+
+                items.forEach(code => {
+                    const { country, code: cc } = CURRENCIES[code];
+                    const li = document.createElement("li");
+                    li.innerHTML = `<img src="${FLAG_URL(cc)}" class="w-6 h-4 rounded-sm"> <span class="font-semibold">${code}</span> - ${country}`;
+                    li.addEventListener("click", () => {
+                        selectCallback(code);
+                        fromDropdown.style.display = "none";
+                        toDropdown.style.display = "none";
+                    });
+                    listElement.appendChild(li);
+                });
+            }
+
+            // Update selected UI
+            function updateSelected() {
+                fromSelected.innerHTML = `<img src="${FLAG_URL(CURRENCIES[fromCurrency].code)}" class="w-6 h-4 rounded-sm"> <span>${fromCurrency} - ${CURRENCIES[fromCurrency].country}</span>`;
+                toSelected.innerHTML = `<img src="${FLAG_URL(CURRENCIES[toCurrency].code)}" class="w-6 h-4 rounded-sm"> <span>${toCurrency} - ${CURRENCIES[toCurrency].country}</span>`;
+            }
+
+            // Convert function
+            function convert() {
+                const amount = parseFloat(amountInput.value);
+                if (isNaN(amount) || !exchangeRates[toCurrency]) {
+                    resultContainer.classList.add("hidden");
+                    return;
+                }
+                const converted = amount * exchangeRates[toCurrency];
+                resultText.textContent = `${amount.toFixed(2)} ${fromCurrency} = ${converted.toFixed(2)} ${toCurrency}`;
+                resultContainer.classList.remove("hidden");
+            }
+
+            // Event listeners for dropdown selectors
+            fromSelector.addEventListener("click", (e) => {
+                e.stopPropagation();
+                toDropdown.style.display = "none";
+                fromDropdown.style.display = fromDropdown.style.display === "block" ? "none" : "block";
+                if (fromDropdown.style.display === "block") {
+                    renderDropdown(fromList, fromSearch.value, code => {
+                        fromCurrency = code;
+                        updateSelected();
+                        fetchRates(fromCurrency).then(convert);
+                    });
+                }
+            });
+
+            toSelector.addEventListener("click", (e) => {
+                e.stopPropagation();
+                fromDropdown.style.display = "none";
+                toDropdown.style.display = toDropdown.style.display === "block" ? "none" : "block";
+                if (toDropdown.style.display === "block") {
+                    renderDropdown(toList, toSearch.value, code => {
+                        toCurrency = code;
+                        updateSelected();
+                        convert();
+                    });
+                }
+            });
+
+            // Event listeners for search inputs
+            fromSearch.addEventListener("input", () => {
+                renderDropdown(fromList, fromSearch.value, code => {
+                    fromCurrency = code;
+                    updateSelected();
+                    fetchRates(fromCurrency).then(convert);
+                });
+            });
+
+            toSearch.addEventListener("input", () => {
+                renderDropdown(toList, toSearch.value, code => {
+                    toCurrency = code;
+                    updateSelected();
+                    convert();
+                });
+            });
+
+            // Event listener for swap button
+            document.getElementById("swap-btn").addEventListener("click", async () => {
+                [fromCurrency, toCurrency] = [toCurrency, fromCurrency];
+                updateSelected();
+                await fetchRates(fromCurrency);
+                convert();
+            });
+
+            // Event listener for convert button
+            convertBtn.addEventListener("click", convert);
+
+            // Event listener for amount input
+            amountInput.addEventListener("input", convert);
+
+            // Hide dropdowns when clicking outside
+            document.addEventListener("click", e => {
+                if (!fromSelector.parentElement.contains(e.target)) fromDropdown.style.display = "none";
+                if (!toSelector.parentElement.contains(e.target)) toDropdown.style.display = "none";
+            });
+
+            // Initialize
+            updateSelected();
+            fetchRates(fromCurrency);
+        });
+    </script>
+</body>
+
+</html>
