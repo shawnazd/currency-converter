@@ -5,12 +5,14 @@ A modern, responsive **Currency Converter** web app built with **HTML, Tailwind 
 Convert amounts between multiple currencies with **real-time exchange rates**, search functionality, and country flags.
 
 ---
+
 ### 🖼 Screenshot
 
-![Currency Converter Screenshot](Currency Converter.png)
+![Currency Converter Screenshot](currency_converter.png)
+
+---
 
 ## 🌐 Live Demo
-
 
 [View Live Demo](https://shawnazd.github.io/currency-converter/)
 
@@ -84,4 +86,3 @@ https://your-username.github.io/repo-name/
 * GitHub: [shawnazd](https://github.com/shawnazd)
 
 ```
-
