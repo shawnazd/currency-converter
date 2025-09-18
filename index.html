@@ -63,8 +63,8 @@
 
     <!-- Main Content -->
     <div class="flex-1 flex items-center justify-center p-4">
-        <div class="max-w-3xl w-full bg-white p-10 rounded-3xl shadow-2xl transition-all duration-500 hover:shadow-3xl">
-            <h1 class="text-4xl font-extrabold text-center text-indigo-800 mb-8">💱 Currency Converter</h1>
+        <div class="max-w-3xl w-full bg-white p-6 sm:p-10 rounded-3xl shadow-2xl transition-all duration-500 hover:shadow-3xl">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-center text-indigo-800 mb-8">💱 Currency Converter</h1>
 
             <!-- Amount Input -->
             <div class="mb-6">
@@ -74,12 +74,12 @@
                     placeholder="Enter amount">
             </div>
 
-            <!-- Currency Selectors -->
-            <div class="flex items-center gap-6 mb-6">
-                <!-- From -->
-                <div class="flex-1 relative">
+            <!-- Currency Selectors and Swap Button -->
+            <div class="flex flex-col sm:flex-row items-center gap-6 sm:gap-6 mb-6">
+                <!-- From Selector -->
+                <div class="flex-1 w-full relative">
                     <label class="block text-gray-700 font-semibold mb-2">From</label>
-                    <div class="border rounded-xl p-4 flex items-center justify-between cursor-pointer bg-white hover:ring-2 hover:ring-indigo-400 transition min-w-[200px]"
+                    <div class="border rounded-xl p-4 flex items-center justify-between cursor-pointer bg-white hover:ring-2 hover:ring-indigo-400 transition"
                         id="from-selector">
                         <span class="flex items-center gap-3 whitespace-nowrap" id="from-selected"></span>
                         <span class="text-gray-500">▼</span>
@@ -92,14 +92,14 @@
 
                 <!-- Swap Button -->
                 <button id="swap-btn"
-                    class="mt-8 p-3 bg-indigo-500 hover:bg-indigo-600 rounded-full transition-transform duration-300 text-white font-bold text-2xl shadow-md transform hover:scale-110 active:scale-95">
+                    class="my-4 sm:mt-8 p-3 bg-indigo-500 hover:bg-indigo-600 rounded-full transition-transform duration-300 text-white font-bold text-2xl shadow-md transform hover:scale-110 active:scale-95">
                     🔄
                 </button>
 
-                <!-- To -->
-                <div class="flex-1 relative">
+                <!-- To Selector -->
+                <div class="flex-1 w-full relative">
                     <label class="block text-gray-700 font-semibold mb-2">To</label>
-                    <div class="border rounded-xl p-4 flex items-center justify-between cursor-pointer bg-white hover:ring-2 hover:ring-indigo-400 transition min-w-[200px]"
+                    <div class="border rounded-xl p-4 flex items-center justify-between cursor-pointer bg-white hover:ring-2 hover:ring-indigo-400 transition"
                         id="to-selector">
                         <span class="flex items-center gap-3 whitespace-nowrap" id="to-selected"></span>
                         <span class="text-gray-500">▼</span>
