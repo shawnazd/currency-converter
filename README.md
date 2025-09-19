@@ -85,4 +85,3 @@ https://your-username.github.io/repo-name/
 * **Shawn**
 * GitHub: [shawnazd](https://github.com/shawnazd)
 
-```
