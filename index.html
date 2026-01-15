@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Currency Converter</title>
+    <title>Currency Converter Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(to bottom right, #eef2ff, #d1d5db);
+        }
+
+        /* Typing Animation */
+        .typing-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .typing-effect {
+            overflow: hidden;
+            border-right: .15em solid #4f46e5;
+            white-space: nowrap;
+            letter-spacing: .05em;
+            width: 0;
+            animation: typing 2.5s steps(20, end) forwards, blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #4f46e5; }
         }
 
         .dropdown {
@@ -21,7 +46,7 @@
             background: white;
             border-radius: 0.75rem;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            max-height: 50vh;
+            max-height: 40vh;
             overflow-y: auto;
             display: none;
             z-index: 50;
@@ -29,13 +54,12 @@
 
         .dropdown li {
             cursor: pointer;
-            white-space: nowrap;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             padding: 0.75rem;
             font-size: 0.875rem;
-            min-height: 44px;
+            transition: background 0.2s;
         }
 
         .dropdown li:hover {
@@ -44,95 +68,85 @@
 
         .search-input {
             width: 100%;
-            padding: 0.5rem 0.75rem;
+            padding: 0.75rem;
             border-bottom: 1px solid #e5e7eb;
             outline: none;
-            font-size: 0.875rem;
+            position: sticky;
+            top: 0;
+            background: white;
         }
 
-        .dropdown::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .dropdown::-webkit-scrollbar-thumb {
-            background-color: #d1d5db;
-            border-radius: 4px;
-        }
-
-        #result-text {
-            font-size: 1rem;
-        }
-
-        @media (min-width: 640px) {
-            #result-text {
-                font-size: 1.25rem;
-            }
-        }
+        #result-text { font-size: 1.1rem; }
+        @media (min-width: 640px) { #result-text { font-size: 1.25rem; } }
     </style>
 </head>
 
 <body class="flex flex-col min-h-screen">
     <div class="flex-1 flex items-center justify-center p-4">
-        <div class="max-w-3xl w-full bg-white p-4 sm:p-6 md:p-10 rounded-3xl shadow-2xl transition-all duration-500 hover:shadow-3xl">
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-center text-indigo-800 mb-6 sm:mb-8">💱 Currency Converter</h1>
+        <div class="max-w-2xl w-full bg-white p-6 md:p-10 rounded-3xl shadow-2xl transition-all duration-500">
+            
+            <div class="typing-container">
+                <h1 class="typing-effect text-2xl sm:text-3xl font-extrabold text-indigo-800">
+                    💱 Currency Converter
+                </h1>
+            </div>
 
-            <!-- Amount Input -->
+            <button class="flex items-center justify-center gap-2 w-full mb-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md active:scale-95 group">
+                <span>Log In</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+            </button>
+
             <div class="mb-6">
-                <label for="amount" class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">Amount</label>
-                <input type="number" id="amount"
-                    class="w-full p-3 sm:p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all duration-300 text-sm sm:text-base"
+                <label for="amount" class="block text-gray-700 font-semibold mb-2">Amount</label>
+                <input type="number" id="amount" value="1"
+                    class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-lg"
                     placeholder="Enter amount">
             </div>
 
-            <!-- Currency Selectors and Swap Button -->
-            <div class="flex flex-col items-center gap-4 sm:gap-6 mb-6">
-                <!-- From Selector -->
-                <div class="w-full relative">
-                    <label class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">From</label>
-                    <div class="border rounded-xl p-3 sm:p-4 flex items-center justify-between cursor-pointer bg-white hover:ring-2 hover:ring-indigo-400 transition"
-                        id="from-selector">
-                        <span class="flex items-center gap-2 sm:gap-3 whitespace-nowrap text-sm sm:text-base" id="from-selected"></span>
-                        <span class="text-gray-500">▼</span>
+            <div class="flex flex-col gap-4 mb-6">
+                <div class="relative">
+                    <label class="block text-gray-700 font-semibold mb-2">From</label>
+                    <div class="border rounded-xl p-4 flex items-center justify-between cursor-pointer bg-white hover:border-indigo-400 transition" id="from-selector">
+                        <span class="flex items-center gap-3" id="from-selected"></span>
+                        <span class="text-gray-400 text-xs">▼</span>
                     </div>
                     <div class="dropdown" id="from-dropdown-list">
-                        <input type="text" placeholder="Search..." class="search-input" id="from-search">
-                        <ul class="py-1" id="from-currency-list"></ul>
+                        <input type="text" placeholder="Search currency..." class="search-input" id="from-search">
+                        <ul id="from-currency-list"></ul>
                     </div>
                 </div>
 
-                <!-- Swap Button -->
-                <button id="swap-btn"
-                    class="p-2 sm:p-3 bg-indigo-500 hover:bg-indigo-600 rounded-full transition-transform duration-300 text-white font-bold text-xl sm:text-2xl shadow-md transform hover:scale-110 active:scale-95">
-                    🔄
-                </button>
+                <div class="flex justify-center -my-2 z-10">
+                    <button id="swap-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white p-3 rounded-full shadow-lg transform hover:rotate-180 transition-transform duration-500">
+                        🔄
+                    </button>
+                </div>
 
-                <!-- To Selector -->
-                <div class="w-full relative">
-                    <label class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">To</label>
-                    <div class="border rounded-xl p-3 sm:p-4 flex items-center justify-between cursor-pointer bg-white hover:ring-2 hover:ring-indigo-400 transition"
-                        id="to-selector">
-                        <span class="flex items-center gap-2 sm:gap-3 whitespace-nowrap text-sm sm:text-base" id="to-selected"></span>
-                        <span class="text-gray-500">▼</span>
+                <div class="relative">
+                    <label class="block text-gray-700 font-semibold mb-2">To</label>
+                    <div class="border rounded-xl p-4 flex items-center justify-between cursor-pointer bg-white hover:border-indigo-400 transition" id="to-selector">
+                        <span class="flex items-center gap-3" id="to-selected"></span>
+                        <span class="text-gray-400 text-xs">▼</span>
                     </div>
                     <div class="dropdown" id="to-dropdown-list">
-                        <input type="text" placeholder="Search..." class="search-input" id="to-search">
-                        <ul class="py-1" id="to-currency-list"></ul>
+                        <input type="text" placeholder="Search currency..." class="search-input" id="to-search">
+                        <ul id="to-currency-list"></ul>
                     </div>
                 </div>
             </div>
 
-            <!-- Result -->
-            <div id="result-container"
-                class="hidden mt-4 sm:mt-6 p-4 sm:p-6 bg-purple-50 border border-purple-200 rounded-xl text-center shadow-inner">
-                <p id="result-text" class="font-bold text-purple-800"></p>
+            <div id="result-container" class="hidden p-6 bg-indigo-50 border border-indigo-100 rounded-2xl text-center">
+                <p id="result-text" class="font-bold text-indigo-900"></p>
             </div>
         </div>
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-    const CURRENCIES = {
-        "AED": { country: "United Arab Emirates", code: "ae" },
+        document.addEventListener("DOMContentLoaded", () => {
+            const CURRENCIES = {
+                "AED": { country: "United Arab Emirates", code: "ae" },
         "AFN": { country: "Afghanistan", code: "af" },
         "ALL": { country: "Albania", code: "al" },
         "AMD": { country: "Armenia", code: "am" },
@@ -287,153 +301,87 @@
         "ZAR": { country: "South Africa", code: "za" },
         "ZMW": { country: "Zambia", code: "zm" },
         "ZWD": { country: "Zimbabwe", code: "zw" }
-    };
+            };
 
-    const FLAG_URL = code => `https://flagcdn.com/w40/${code}.png`;
+            const FLAG_URL = code => `https://flagcdn.com/w40/${code}.png`;
+            let fromCurrency = "USD", toCurrency = "EUR", exchangeRates = {};
 
-    const fromSelector = document.getElementById("from-selector");
-    const toSelector = document.getElementById("to-selector");
-    const fromList = document.getElementById("from-currency-list");
-    const toList = document.getElementById("to-currency-list");
-    const fromDropdown = document.getElementById("from-dropdown-list");
-    const toDropdown = document.getElementById("to-dropdown-list");
-    const fromSelected = document.getElementById("from-selected");
-    const toSelected = document.getElementById("to-selected");
-    const amountInput = document.getElementById("amount");
-    const resultContainer = document.getElementById("result-container");
-    const resultText = document.getElementById("result-text");
-    const fromSearch = document.getElementById("from-search");
-    const toSearch = document.getElementById("to-search");
+            const fromSelected = document.getElementById("from-selected");
+            const toSelected = document.getElementById("to-selected");
+            const fromDropdown = document.getElementById("from-dropdown-list");
+            const toDropdown = document.getElementById("to-dropdown-list");
+            const amountInput = document.getElementById("amount");
 
-    let exchangeRates = {};
-    let fromCurrency = "USD";
-    let toCurrency = "EUR";
+            function updateUI() {
+                fromSelected.innerHTML = `<img src="${FLAG_URL(CURRENCIES[fromCurrency].code)}" class="w-6 rounded-sm"> <b>${fromCurrency}</b> <span class="text-gray-500 text-sm">- ${CURRENCIES[fromCurrency].country}</span>`;
+                toSelected.innerHTML = `<img src="${FLAG_URL(CURRENCIES[toCurrency].code)}" class="w-6 rounded-sm"> <b>${toCurrency}</b> <span class="text-gray-500 text-sm">- ${CURRENCIES[toCurrency].country}</span>`;
+            }
 
-    async function fetchRates(base) {
-        try {
-            const res = await fetch(`https://open.er-api.com/v6/latest/${base}`);
-            if (!res.ok) throw new Error("Failed to fetch exchange rates");
-            const data = await res.json();
-            exchangeRates = data.rates;
-        } catch (error) {
-            console.error("Error fetching rates:", error);
-        }
-    }
+            async function fetchRates() {
+                try {
+                    const res = await fetch(`https://open.er-api.com/v6/latest/${fromCurrency}`);
+                    const data = await res.json();
+                    exchangeRates = data.rates;
+                    convert();
+                } catch (e) { console.error("Rate fetch failed"); }
+            }
 
-    function renderDropdown(listElement, dropdownElement, searchTerm, selectCallback) {
-        listElement.innerHTML = "";
-        const term = searchTerm.toLowerCase();
+            function convert() {
+                const amount = parseFloat(amountInput.value);
+                if (!amount || !exchangeRates[toCurrency]) return;
+                const result = (amount * exchangeRates[toCurrency]).toLocaleString(undefined, {minimumFractionDigits: 2});
+                document.getElementById("result-text").innerText = `${amount} ${fromCurrency} = ${result} ${toCurrency}`;
+                document.getElementById("result-container").classList.remove("hidden");
+            }
 
-        const items = Object.keys(CURRENCIES)
-            .filter(code => code.toLowerCase().includes(term) || CURRENCIES[code].country.toLowerCase().includes(term))
-            .sort();
+            function setupDropdown(id, type) {
+                const selector = document.getElementById(`${id}-selector`);
+                const list = document.getElementById(`${id}-currency-list`);
+                const search = document.getElementById(`${id}-search`);
+                const dropdown = document.getElementById(`${id}-dropdown-list`);
 
-        items.forEach(code => {
-            const { country, code: cc } = CURRENCIES[code];
-            const li = document.createElement("li");
-            li.innerHTML = `<img src="${FLAG_URL(cc)}" class="w-5 h-3 sm:w-6 sm:h-4 rounded-sm"> <span class="font-semibold">${code}</span> - ${country}`;
-            
-            // Fix: Use mousedown to trigger before the blur/click-away logic
-            li.addEventListener("mousedown", (e) => {
-                e.preventDefault(); 
-                selectCallback(code);
-                dropdownElement.style.display = "none";
-                fromSearch.value = ""; // Clear searches
-                toSearch.value = "";
+                selector.onclick = () => {
+                    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+                    if(dropdown.style.display === "block") search.focus();
+                };
+
+                const render = (filter = "") => {
+                    list.innerHTML = "";
+                    Object.keys(CURRENCIES).filter(c => c.includes(filter.toUpperCase())).forEach(code => {
+                        const li = document.createElement("li");
+                        li.innerHTML = `<img src="${FLAG_URL(CURRENCIES[code].code)}" class="w-5"> ${code} - ${CURRENCIES[code].country}`;
+                        li.onmousedown = () => {
+                            if(type === 'from') { fromCurrency = code; fetchRates(); }
+                            else { toCurrency = code; convert(); }
+                            updateUI();
+                            dropdown.style.display = "none";
+                        };
+                        list.appendChild(li);
+                    });
+                };
+
+                search.oninput = (e) => render(e.target.value);
+                render();
+            }
+
+            // Close on click outside
+            document.addEventListener("mousedown", (e) => {
+                if (!e.target.closest('.relative')) {
+                    fromDropdown.style.display = toDropdown.style.display = "none";
+                }
             });
-            listElement.appendChild(li);
+
+            document.getElementById("swap-btn").onclick = () => {
+                [fromCurrency, toCurrency] = [toCurrency, fromCurrency];
+                updateUI(); fetchRates();
+            };
+
+            amountInput.oninput = convert;
+            setupDropdown("from", "from");
+            setupDropdown("to", "to");
+            updateUI();
+            fetchRates();
         });
-    }
-
-    function updateSelected() {
-        fromSelected.innerHTML = `<img src="${FLAG_URL(CURRENCIES[fromCurrency].code)}" class="w-5 h-3 sm:w-6 sm:h-4 rounded-sm"> <span>${fromCurrency} - ${CURRENCIES[fromCurrency].country}</span>`;
-        toSelected.innerHTML = `<img src="${FLAG_URL(CURRENCIES[toCurrency].code)}" class="w-5 h-3 sm:w-6 sm:h-4 rounded-sm"> <span>${toCurrency} - ${CURRENCIES[toCurrency].country}</span>`;
-    }
-
-    function convert() {
-        const amount = parseFloat(amountInput.value);
-        if (isNaN(amount) || amount <= 0 || !exchangeRates[toCurrency]) {
-            resultContainer.classList.add("hidden");
-            return;
-        }
-        const converted = amount * exchangeRates[toCurrency];
-        resultText.textContent = `${amount.toLocaleString()} ${fromCurrency} = ${converted.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${toCurrency}`;
-        resultContainer.classList.remove("hidden");
-    }
-
-    // Toggle Dropdowns
-    fromSelector.addEventListener("click", () => {
-        const isVisible = fromDropdown.style.display === "block";
-        toDropdown.style.display = "none";
-        fromDropdown.style.display = isVisible ? "none" : "block";
-        if (!isVisible) {
-            renderDropdown(fromList, fromDropdown, "", code => {
-                fromCurrency = code;
-                updateSelected();
-                fetchRates(fromCurrency).then(convert);
-            });
-            fromSearch.focus();
-        }
-    });
-
-    toSelector.addEventListener("click", () => {
-        const isVisible = toDropdown.style.display === "block";
-        fromDropdown.style.display = "none";
-        toDropdown.style.display = isVisible ? "none" : "block";
-        if (!isVisible) {
-            renderDropdown(toList, toDropdown, "", code => {
-                toCurrency = code;
-                updateSelected();
-                convert();
-            });
-            toSearch.focus();
-        }
-    });
-
-    // Search logic
-    fromSearch.addEventListener("input", (e) => {
-        renderDropdown(fromList, fromDropdown, e.target.value, code => {
-            fromCurrency = code;
-            updateSelected();
-            fetchRates(fromCurrency).then(convert);
-        });
-    });
-
-    toSearch.addEventListener("input", (e) => {
-        renderDropdown(toList, toDropdown, e.target.value, code => {
-            toCurrency = code;
-            updateSelected();
-            convert();
-        });
-    });
-
-    // Swap Button
-    document.getElementById("swap-btn").addEventListener("click", async () => {
-        [fromCurrency, toCurrency] = [toCurrency, fromCurrency];
-        updateSelected();
-        await fetchRates(fromCurrency);
-        convert();
-    });
-
-    amountInput.addEventListener("input", convert);
-
-    // Close when clicking outside
-    document.addEventListener("mousedown", (e) => {
-        if (!fromSelector.contains(e.target) && !fromDropdown.contains(e.target)) {
-            fromDropdown.style.display = "none";
-        }
-        if (!toSelector.contains(e.target) && !toDropdown.contains(e.target)) {
-            toDropdown.style.display = "none";
-        }
-    });
-
-    // Initial Load
-    updateSelected();
-    fetchRates(fromCurrency).then(convert);
-});
     </script>
 </body>
-
 </html>
-
-
