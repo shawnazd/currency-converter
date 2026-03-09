@@ -1,387 +1,244 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Currency Converter Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(to bottom right, #eef2ff, #d1d5db);
-        }
-
-        /* Typing Animation */
-        .typing-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .typing-effect {
-            overflow: hidden;
-            border-right: .15em solid #4f46e5;
-            white-space: nowrap;
-            letter-spacing: .05em;
-            width: 0;
-            animation: typing 2.5s steps(20, end) forwards, blink-caret .75s step-end infinite;
-        }
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: #4f46e5; }
-        }
-
-        .dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            max-height: 40vh;
-            overflow-y: auto;
-            display: none;
-            z-index: 50;
-        }
-
-        .dropdown li {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem;
-            font-size: 0.875rem;
-            transition: background 0.2s;
-        }
-
-        .dropdown li:hover {
-            background-color: #f3f4f6;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 0.75rem;
-            border-bottom: 1px solid #e5e7eb;
-            outline: none;
-            position: sticky;
-            top: 0;
-            background: white;
-        }
-
-        #result-text { font-size: 1.1rem; }
-        @media (min-width: 640px) { #result-text { font-size: 1.25rem; } }
-    </style>
-</head>
-
-<body class="flex flex-col min-h-screen">
-    <div class="flex-1 flex items-center justify-center p-4">
-        <div class="max-w-2xl w-full bg-white p-6 md:p-10 rounded-3xl shadow-2xl transition-all duration-500">
-            
-            <div class="typing-container">
-                <h1 class="typing-effect text-2xl sm:text-3xl font-extrabold text-indigo-800">
-                    💱 Currency Converter
-                </h1>
-            </div>
-
-            <button class="flex items-center justify-center gap-2 w-full mb-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md active:scale-95 group">
-                <span>Log In</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                </svg>
-            </button>
-
-            <div class="mb-6">
-                <label for="amount" class="block text-gray-700 font-semibold mb-2">Amount</label>
-                <input type="number" id="amount" value="1"
-                    class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all text-lg"
-                    placeholder="Enter amount">
-            </div>
-
-            <div class="flex flex-col gap-4 mb-6">
-                <div class="relative">
-                    <label class="block text-gray-700 font-semibold mb-2">From</label>
-                    <div class="border rounded-xl p-4 flex items-center justify-between cursor-pointer bg-white hover:border-indigo-400 transition" id="from-selector">
-                        <span class="flex items-center gap-3" id="from-selected"></span>
-                        <span class="text-gray-400 text-xs">▼</span>
-                    </div>
-                    <div class="dropdown" id="from-dropdown-list">
-                        <input type="text" placeholder="Search currency..." class="search-input" id="from-search">
-                        <ul id="from-currency-list"></ul>
-                    </div>
-                </div>
-
-                <div class="flex justify-center -my-2 z-10">
-                    <button id="swap-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white p-3 rounded-full shadow-lg transform hover:rotate-180 transition-transform duration-500">
-                        🔄
-                    </button>
-                </div>
-
-                <div class="relative">
-                    <label class="block text-gray-700 font-semibold mb-2">To</label>
-                    <div class="border rounded-xl p-4 flex items-center justify-between cursor-pointer bg-white hover:border-indigo-400 transition" id="to-selector">
-                        <span class="flex items-center gap-3" id="to-selected"></span>
-                        <span class="text-gray-400 text-xs">▼</span>
-                    </div>
-                    <div class="dropdown" id="to-dropdown-list">
-                        <input type="text" placeholder="Search currency..." class="search-input" id="to-search">
-                        <ul id="to-currency-list"></ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="result-container" class="hidden p-6 bg-indigo-50 border border-indigo-100 rounded-2xl text-center">
-                <p id="result-text" class="font-bold text-indigo-900"></p>
-            </div>
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Currency Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Layered Background -->
+    <div class="bg">
+      <div class="bg-blob b1"></div>
+      <div class="bg-blob b2"></div>
+      <div class="bg-blob b3"></div>
+      <div class="bg-grid"></div>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const CURRENCIES = {
-                "AED": { country: "United Arab Emirates", code: "ae" },
-        "AFN": { country: "Afghanistan", code: "af" },
-        "ALL": { country: "Albania", code: "al" },
-        "AMD": { country: "Armenia", code: "am" },
-        "ANG": { country: "Netherlands Antilles", code: "an" },
-        "AOA": { country: "Angola", code: "ao" },
-        "ARS": { country: "Argentina", code: "ar" },
-        "AUD": { country: "Australia", code: "au" },
-        "AWG": { country: "Aruba", code: "aw" },
-        "AZN": { country: "Azerbaijan", code: "az" },
-        "BAM": { country: "Bosnia and Herzegovina", code: "ba" },
-        "BBD": { country: "Barbados", code: "bb" },
-        "BDT": { country: "Bangladesh", code: "bd" },
-        "BGN": { country: "Bulgaria", code: "bg" },
-        "BHD": { country: "Bahrain", code: "bh" },
-        "BIF": { country: "Burundi", code: "bi" },
-        "BMD": { country: "Bermuda", code: "bm" },
-        "BND": { country: "Brunei", code: "bn" },
-        "BOB": { country: "Bolivia", code: "bo" },
-        "BRL": { country: "Brazil", code: "br" },
-        "BSD": { country: "Bahamas", code: "bs" },
-        "BTN": { country: "Bhutan", code: "bt" },
-        "BWP": { country: "Botswana", code: "bw" },
-        "BYN": { country: "Belarus", code: "by" },
-        "BZD": { country: "Belize", code: "bz" },
-        "CAD": { country: "Canada", code: "ca" },
-        "CDF": { country: "DR Congo", code: "cd" },
-        "CHF": { country: "Switzerland", code: "ch" },
-        "CLP": { country: "Chile", code: "cl" },
-        "CNY": { country: "China", code: "cn" },
-        "COP": { country: "Colombia", code: "co" },
-        "CRC": { country: "Costa Rica", code: "cr" },
-        "CUC": { country: "Cuba", code: "cu" },
-        "CUP": { country: "Cuba", code: "cu" },
-        "CVE": { country: "Cape Verde", code: "cv" },
-        "CZK": { country: "Czech Republic", code: "cz" },
-        "DJF": { country: "Djibouti", code: "dj" },
-        "DKK": { country: "Denmark", code: "dk" },
-        "DOP": { country: "Dominican Republic", code: "do" },
-        "DZD": { country: "Algeria", code: "dz" },
-        "EGP": { country: "Egypt", code: "eg" },
-        "ERN": { country: "Eritrea", code: "er" },
-        "ETB": { country: "Ethiopia", code: "et" },
-        "EUR": { country: "European Union", code: "eu" },
-        "FJD": { country: "Fiji", code: "fj" },
-        "FKP": { country: "Falkland Islands", code: "fk" },
-        "GBP": { country: "United Kingdom", code: "gb" },
-        "GEL": { country: "Georgia", code: "ge" },
-        "GHS": { country: "Ghana", code: "gh" },
-        "GIP": { country: "Gibraltar", code: "gi" },
-        "GMD": { country: "Gambia", code: "gm" },
-        "GNF": { country: "Guinea", code: "gn" },
-        "GTQ": { country: "Guatemala", code: "gt" },
-        "GYD": { country: "Guyana", code: "gy" },
-        "HKD": { country: "Hong Kong", code: "hk" },
-        "HNL": { country: "Honduras", code: "hn" },
-        "HRK": { country: "Croatia", code: "hr" },
-        "HTG": { country: "Haiti", code: "ht" },
-        "HUF": { country: "Hungary", code: "hu" },
-        "IDR": { country: "Indonesia", code: "id" },
-        "ILS": { country: "Israel", code: "il" },
-        "INR": { country: "India", code: "in" },
-        "IQD": { country: "Iraq", code: "iq" },
-        "IRR": { country: "Iran", code: "ir" },
-        "ISK": { country: "Iceland", code: "is" },
-        "JMD": { country: "Jamaica", code: "jm" },
-        "JOD": { country: "Jordan", code: "jo" },
-        "JPY": { country: "Japan", code: "jp" },
-        "KES": { country: "Kenya", code: "ke" },
-        "KGS": { country: "Kyrgyzstan", code: "kg" },
-        "KHR": { country: "Cambodia", code: "kh" },
-        "KMF": { country: "Comoros", code: "km" },
-        "KPW": { country: "North Korea", code: "kp" },
-        "KRW": { country: "South Korea", code: "kr" },
-        "KWD": { country: "Kuwait", code: "kw" },
-        "KYD": { country: "Cayman Islands", code: "ky" },
-        "KZT": { country: "Kazakhstan", code: "kz" },
-        "LAK": { country: "Laos", code: "la" },
-        "LBP": { country: "Lebanon", code: "lb" },
-        "LKR": { country: "Sri Lanka", code: "lk" },
-        "LRD": { country: "Liberia", code: "lr" },
-        "LSL": { country: "Lesotho", code: "ls" },
-        "LYD": { country: "Libya", code: "ly" },
-        "MAD": { country: "Morocco", code: "ma" },
-        "MDL": { country: "Moldova", code: "md" },
-        "MGA": { country: "Madagascar", code: "mg" },
-        "MKD": { country: "North Macedonia", code: "mk" },
-        "MMK": { country: "Myanmar", code: "mm" },
-        "MNT": { country: "Mongolia", code: "mn" },
-        "MOP": { country: "Macau", code: "mo" },
-        "MRO": { country: "Mauritania", code: "mr" },
-        "MUR": { country: "Mauritius", code: "mu" },
-        "MVR": { country: "Maldives", code: "mv" },
-        "MWK": { country: "Malawi", code: "mw" },
-        "MXN": { country: "Mexico", code: "mx" },
-        "MYR": { country: "Malaysia", code: "my" },
-        "MZN": { country: "Mozambique", code: "mz" },
-        "NAD": { country: "Namibia", code: "na" },
-        "NGN": { country: "Nigeria", code: "ng" },
-        "NIO": { country: "Nicaragua", code: "ni" },
-        "NOK": { country: "Norway", code: "no" },
-        "NPR": { country: "Nepal", code: "np" },
-        "NZD": { country: "New Zealand", code: "nz" },
-        "OMR": { country: "Oman", code: "om" },
-        "PAB": { country: "Panama", code: "pa" },
-        "PEN": { country: "Peru", code: "pe" },
-        "PGK": { country: "Papua New Guinea", code: "pg" },
-        "PHP": { country: "Philippines", code: "ph" },
-        "PKR": { country: "Pakistan", code: "pk" },
-        "PLN": { country: "Poland", code: "pl" },
-        "PYG": { country: "Paraguay", code: "py" },
-        "QAR": { country: "Qatar", code: "qa" },
-        "RON": { country: "Romania", code: "ro" },
-        "RSD": { country: "Serbia", code: "rs" },
-        "RUB": { country: "Russia", code: "ru" },
-        "RWF": { country: "Rwanda", code: "rw" },
-        "SAR": { country: "Saudi Arabia", code: "sa" },
-        "SBD": { country: "Solomon Islands", code: "sb" },
-        "SCR": { country: "Seychelles", code: "sc" },
-        "SDG": { country: "Sudan", code: "sd" },
-        "SEK": { country: "Sweden", code: "se" },
-        "SGD": { country: "Singapore", code: "sg" },
-        "SLL": { country: "Sierra Leone", code: "sl" },
-        "SOS": { country: "Somalia", code: "so" },
-        "SRD": { country: "Suriname", code: "sr" },
-        "SSP": { country: "South Sudan", code: "ss" },
-        "STD": { country: "Sao Tome and Principe", code: "st" },
-        "SYP": { country: "Syria", code: "sy" },
-        "SZL": { country: "Eswatini", code: "sz" },
-        "THB": { country: "Thailand", code: "th" },
-        "TJS": { country: "Tajikistan", code: "tj" },
-        "TMT": { country: "Turkmenistan", code: "tm" },
-        "TND": { country: "Tunisia", code: "tn" },
-        "TOP": { country: "Tonga", code: "to" },
-        "TRY": { country: "Turkey", code: "tr" },
-        "TTD": { country: "Trinidad and Tobago", code: "tt" },
-        "TWD": { country: "Taiwan", code: "tw" },
-        "TZS": { country: "Tanzania", code: "tz" },
-        "UAH": { country: "Ukraine", code: "ua" },
-        "UGX": { country: "Uganda", code: "ug" },
-        "USD": { country: "United States", code: "us" },
-        "UYU": { country: "Uruguay", code: "uy" },
-        "UZS": { country: "Uzbekistan", code: "uz" },
-        "VEF": { country: "Venezuela", code: "ve" },
-        "VND": { country: "Vietnam", code: "vn" },
-        "VUV": { country: "Vanuatu", code: "vu" },
-        "WST": { country: "Samoa", code: "ws" },
-        "XAF": { country: "Central African Republic", code: "cf" },
-        "XCD": { country: "Eastern Caribbean", code: "vc" },
-        "XOF": { country: "West African Republic", code: "bf" },
-        "XPF": { country: "French Polynesia", code: "pf" },
-        "YER": { country: "Yemen", code: "ye" },
-        "ZAR": { country: "South Africa", code: "za" },
-        "ZMW": { country: "Zambia", code: "zm" },
-        "ZWD": { country: "Zimbabwe", code: "zw" }
-            };
+    <div class="page">
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
+            </svg>
+          </div>
+          <span class="brand-name">Currency Converter</span>
+        </div>
+        <div class="live-badge">
+          <span class="live-dot"></span>
+          Live Rates
+        </div>
+      </header>
 
-            const FLAG_URL = code => `https://flagcdn.com/w40/${code}.png`;
-            let fromCurrency = "USD", toCurrency = "EUR", exchangeRates = {};
+      <!-- Hero label -->
+      <div class="hero">
+        <h1 class="hero-title">
+          Convert <span class="hero-accent">currencies</span><br />instantly.
+        </h1>
+        <p class="hero-sub" id="last-updated">Fetching live exchange rates…</p>
+      </div>
 
-            const fromSelected = document.getElementById("from-selected");
-            const toSelected = document.getElementById("to-selected");
-            const fromDropdown = document.getElementById("from-dropdown-list");
-            const toDropdown = document.getElementById("to-dropdown-list");
-            const amountInput = document.getElementById("amount");
+      <!-- Main converter card -->
+      <div class="card">
+        <!-- Amount -->
+        <div class="input-block">
+          <label class="lbl">You send</label>
+          <div class="amount-row">
+            <div
+              class="currency-pill from-pill"
+              id="from-btn"
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+            >
+              <img class="pill-flag" id="from-flag" src="" alt="" width="26" />
+              <span class="pill-code" id="from-code">USD</span>
+              <svg
+                class="pill-caret"
+                id="from-caret"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+            <input
+              type="number"
+              id="amount"
+              value="1"
+              min="0"
+              step="any"
+              class="amount-input"
+              placeholder="0.00"
+              autocomplete="off"
+              inputmode="decimal"
+            />
+          </div>
+          <!-- From dropdown -->
+          <div class="dropdown" id="from-dropdown">
+            <div class="dd-search-row">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                id="from-search"
+                class="dd-search"
+                placeholder="Search…"
+                autocomplete="off"
+              />
+            </div>
+            <ul class="dd-list" id="from-list"></ul>
+          </div>
+        </div>
 
-            function updateUI() {
-                fromSelected.innerHTML = `<img src="${FLAG_URL(CURRENCIES[fromCurrency].code)}" class="w-6 rounded-sm"> <b>${fromCurrency}</b> <span class="text-gray-500 text-sm">- ${CURRENCIES[fromCurrency].country}</span>`;
-                toSelected.innerHTML = `<img src="${FLAG_URL(CURRENCIES[toCurrency].code)}" class="w-6 rounded-sm"> <b>${toCurrency}</b> <span class="text-gray-500 text-sm">- ${CURRENCIES[toCurrency].country}</span>`;
-            }
+        <!-- Swap -->
+        <div class="swap-row">
+          <div class="swap-line"></div>
+          <button class="swap-btn" id="swap-btn" aria-label="Swap currencies">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="M7 16V4m0 0L3 8m4-4l4 4" />
+              <path d="M17 8v12m0 0l4-4m-4 4l-4-4" />
+            </svg>
+          </button>
+          <div class="swap-line"></div>
+        </div>
 
-            async function fetchRates() {
-                try {
-                    const res = await fetch(`https://open.er-api.com/v6/latest/${fromCurrency}`);
-                    const data = await res.json();
-                    exchangeRates = data.rates;
-                    convert();
-                } catch (e) { console.error("Rate fetch failed"); }
-            }
+        <!-- To -->
+        <div class="input-block">
+          <label class="lbl">You receive</label>
+          <div class="amount-row">
+            <div
+              class="currency-pill to-pill"
+              id="to-btn"
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+            >
+              <img class="pill-flag" id="to-flag" src="" alt="" width="26" />
+              <span class="pill-code" id="to-code">EUR</span>
+              <svg
+                class="pill-caret"
+                id="to-caret"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+            <div class="result-display" id="result-display">—</div>
+          </div>
+          <!-- To dropdown -->
+          <div class="dropdown" id="to-dropdown">
+            <div class="dd-search-row">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                id="to-search"
+                class="dd-search"
+                placeholder="Search…"
+                autocomplete="off"
+              />
+            </div>
+            <ul class="dd-list" id="to-list"></ul>
+          </div>
+        </div>
 
-            function convert() {
-                const amount = parseFloat(amountInput.value);
-                if (!amount || !exchangeRates[toCurrency]) return;
-                const result = (amount * exchangeRates[toCurrency]).toLocaleString(undefined, {minimumFractionDigits: 2});
-                document.getElementById("result-text").innerText = `${amount} ${fromCurrency} = ${result} ${toCurrency}`;
-                document.getElementById("result-container").classList.remove("hidden");
-            }
+        <!-- Rate strip -->
+        <div class="rate-strip" id="rate-strip">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+          <span id="rate-text">Waiting for conversion…</span>
+        </div>
+      </div>
+      <!-- /card -->
 
-            function setupDropdown(id, type) {
-                const selector = document.getElementById(`${id}-selector`);
-                const list = document.getElementById(`${id}-currency-list`);
-                const search = document.getElementById(`${id}-search`);
-                const dropdown = document.getElementById(`${id}-dropdown-list`);
+      <!-- Convert CTA -->
+      <button class="cta-btn" id="convert-btn">
+        <span class="cta-text">Get Rate</span>
+        <div class="cta-loader" id="cta-loader">
+          <span></span><span></span><span></span>
+        </div>
+        <svg
+          class="cta-icon"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <line x1="5" y1="12" x2="19" y2="12" />
+          <polyline points="12 5 19 12 12 19" />
+        </svg>
+      </button>
 
-                selector.onclick = () => {
-                    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-                    if(dropdown.style.display === "block") search.focus();
-                };
+      <p class="footer-note">
+        Rates sourced from open.er-api.com · Updated every 24h
+      </p>
+    </div>
+    <!-- /page -->
 
-                const render = (filter = "") => {
-                    list.innerHTML = "";
-                    Object.keys(CURRENCIES).filter(c => c.includes(filter.toUpperCase())).forEach(code => {
-                        const li = document.createElement("li");
-                        li.innerHTML = `<img src="${FLAG_URL(CURRENCIES[code].code)}" class="w-5"> ${code} - ${CURRENCIES[code].country}`;
-                        li.onmousedown = () => {
-                            if(type === 'from') { fromCurrency = code; fetchRates(); }
-                            else { toCurrency = code; convert(); }
-                            updateUI();
-                            dropdown.style.display = "none";
-                        };
-                        list.appendChild(li);
-                    });
-                };
-
-                search.oninput = (e) => render(e.target.value);
-                render();
-            }
-
-            // Close on click outside
-            document.addEventListener("mousedown", (e) => {
-                if (!e.target.closest('.relative')) {
-                    fromDropdown.style.display = toDropdown.style.display = "none";
-                }
-            });
-
-            document.getElementById("swap-btn").onclick = () => {
-                [fromCurrency, toCurrency] = [toCurrency, fromCurrency];
-                updateUI(); fetchRates();
-            };
-
-            amountInput.oninput = convert;
-            setupDropdown("from", "from");
-            setupDropdown("to", "to");
-            updateUI();
-            fetchRates();
-        });
-    </script>
-</body>
+    <script src="app.js"></script>
+  </body>
 </html>

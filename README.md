@@ -1,4 +1,3 @@
-
 # 💱 Currency Converter
 
 A modern, responsive **Currency Converter** web app built with **HTML, Tailwind CSS, and JavaScript**.  
@@ -8,7 +7,7 @@ Convert amounts between multiple currencies with **real-time exchange rates**, s
 
 ### 🖼 Screenshot
 
-![Currency Converter Screenshot](currency_converter.jpg)
+![Currency Converter Screenshot](currency_converter.png)
 
 ---
 
@@ -31,10 +30,10 @@ Convert amounts between multiple currencies with **real-time exchange rates**, s
 
 ## 💻 How to Use
 
-1. Enter the **amount** you want to convert.  
-2. Select the **From** currency (search by code or country).  
-3. Select the **To** currency (search by code or country).  
-4. Conversion happens automatically as you type.  
+1. Enter the **amount** you want to convert.
+2. Select the **From** currency (search by code or country).
+3. Select the **To** currency (search by code or country).
+4. Conversion happens automatically as you type.
 5. Use the **🔄 Swap button** to switch currencies quickly.
 
 ---
@@ -54,7 +53,7 @@ Convert amounts between multiple currencies with **real-time exchange rates**, s
 
 ```bash
 git clone https://github.com/shawnazd/currency-converter.git
-````
+```
 
 2. Navigate to the project folder:
 
@@ -82,6 +81,5 @@ https://your-username.github.io/repo-name/
 
 ## 👤 Developer
 
-* **Shawn**
-* GitHub: [shawnazd](https://github.com/shawnazd)
-
+- **Shawn**
+- GitHub: [shawnazd](https://github.com/shawnazd)
