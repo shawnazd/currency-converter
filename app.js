@@ -1,338 +1,264 @@
-/* ═══════════════════════════════════════════════════════════
-   Currency Converter · app.js
-   ═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   Currency Converter · Ultimate Edition
+   Auto-convert, animated mesh bg, dynamic hero
+═══════════════════════════════════════════════ */
 
-/* ─── Currency Data ─────────────────────────────────────────── */
-const CURRENCIES = {
-    "AED": { name: "UAE",              flag: "ae" },
-    "AFN": { name: "Afghanistan",      flag: "af" },
-    "ALL": { name: "Albania",          flag: "al" },
-    "AMD": { name: "Armenia",          flag: "am" },
-    "ANG": { name: "Neth. Antilles",   flag: "an" },
-    "AOA": { name: "Angola",           flag: "ao" },
-    "ARS": { name: "Argentina",        flag: "ar" },
-    "AUD": { name: "Australia",        flag: "au" },
-    "AWG": { name: "Aruba",            flag: "aw" },
-    "AZN": { name: "Azerbaijan",       flag: "az" },
-    "BAM": { name: "Bosnia",           flag: "ba" },
-    "BBD": { name: "Barbados",         flag: "bb" },
-    "BDT": { name: "Bangladesh",       flag: "bd" },
-    "BGN": { name: "Bulgaria",         flag: "bg" },
-    "BHD": { name: "Bahrain",          flag: "bh" },
-    "BIF": { name: "Burundi",          flag: "bi" },
-    "BMD": { name: "Bermuda",          flag: "bm" },
-    "BND": { name: "Brunei",           flag: "bn" },
-    "BOB": { name: "Bolivia",          flag: "bo" },
-    "BRL": { name: "Brazil",           flag: "br" },
-    "BSD": { name: "Bahamas",          flag: "bs" },
-    "BTN": { name: "Bhutan",           flag: "bt" },
-    "BWP": { name: "Botswana",         flag: "bw" },
-    "BYN": { name: "Belarus",          flag: "by" },
-    "BZD": { name: "Belize",           flag: "bz" },
-    "CAD": { name: "Canada",           flag: "ca" },
-    "CDF": { name: "DR Congo",         flag: "cd" },
-    "CHF": { name: "Switzerland",      flag: "ch" },
-    "CLP": { name: "Chile",            flag: "cl" },
-    "CNY": { name: "China",            flag: "cn" },
-    "COP": { name: "Colombia",         flag: "co" },
-    "CRC": { name: "Costa Rica",       flag: "cr" },
-    "CUP": { name: "Cuba",             flag: "cu" },
-    "CVE": { name: "Cape Verde",       flag: "cv" },
-    "CZK": { name: "Czech Republic",   flag: "cz" },
-    "DJF": { name: "Djibouti",         flag: "dj" },
-    "DKK": { name: "Denmark",          flag: "dk" },
-    "DOP": { name: "Dom. Republic",    flag: "do" },
-    "DZD": { name: "Algeria",          flag: "dz" },
-    "EGP": { name: "Egypt",            flag: "eg" },
-    "ERN": { name: "Eritrea",          flag: "er" },
-    "ETB": { name: "Ethiopia",         flag: "et" },
-    "EUR": { name: "European Union",   flag: "eu" },
-    "FJD": { name: "Fiji",             flag: "fj" },
-    "FKP": { name: "Falkland Islands", flag: "fk" },
-    "GBP": { name: "United Kingdom",   flag: "gb" },
-    "GEL": { name: "Georgia",          flag: "ge" },
-    "GHS": { name: "Ghana",            flag: "gh" },
-    "GIP": { name: "Gibraltar",        flag: "gi" },
-    "GMD": { name: "Gambia",           flag: "gm" },
-    "GNF": { name: "Guinea",           flag: "gn" },
-    "GTQ": { name: "Guatemala",        flag: "gt" },
-    "GYD": { name: "Guyana",           flag: "gy" },
-    "HKD": { name: "Hong Kong",        flag: "hk" },
-    "HNL": { name: "Honduras",         flag: "hn" },
-    "HTG": { name: "Haiti",            flag: "ht" },
-    "HUF": { name: "Hungary",          flag: "hu" },
-    "IDR": { name: "Indonesia",        flag: "id" },
-    "ILS": { name: "Israel",           flag: "il" },
-    "INR": { name: "India",            flag: "in" },
-    "IQD": { name: "Iraq",             flag: "iq" },
-    "IRR": { name: "Iran",             flag: "ir" },
-    "ISK": { name: "Iceland",          flag: "is" },
-    "JMD": { name: "Jamaica",          flag: "jm" },
-    "JOD": { name: "Jordan",           flag: "jo" },
-    "JPY": { name: "Japan",            flag: "jp" },
-    "KES": { name: "Kenya",            flag: "ke" },
-    "KGS": { name: "Kyrgyzstan",       flag: "kg" },
-    "KHR": { name: "Cambodia",         flag: "kh" },
-    "KMF": { name: "Comoros",          flag: "km" },
-    "KPW": { name: "North Korea",      flag: "kp" },
-    "KRW": { name: "South Korea",      flag: "kr" },
-    "KWD": { name: "Kuwait",           flag: "kw" },
-    "KYD": { name: "Cayman Islands",   flag: "ky" },
-    "KZT": { name: "Kazakhstan",       flag: "kz" },
-    "LAK": { name: "Laos",             flag: "la" },
-    "LBP": { name: "Lebanon",          flag: "lb" },
-    "LKR": { name: "Sri Lanka",        flag: "lk" },
-    "LRD": { name: "Liberia",          flag: "lr" },
-    "LSL": { name: "Lesotho",          flag: "ls" },
-    "LYD": { name: "Libya",            flag: "ly" },
-    "MAD": { name: "Morocco",          flag: "ma" },
-    "MDL": { name: "Moldova",          flag: "md" },
-    "MGA": { name: "Madagascar",       flag: "mg" },
-    "MKD": { name: "N. Macedonia",     flag: "mk" },
-    "MMK": { name: "Myanmar",          flag: "mm" },
-    "MNT": { name: "Mongolia",         flag: "mn" },
-    "MOP": { name: "Macau",            flag: "mo" },
-    "MUR": { name: "Mauritius",        flag: "mu" },
-    "MVR": { name: "Maldives",         flag: "mv" },
-    "MWK": { name: "Malawi",           flag: "mw" },
-    "MXN": { name: "Mexico",           flag: "mx" },
-    "MYR": { name: "Malaysia",         flag: "my" },
-    "MZN": { name: "Mozambique",       flag: "mz" },
-    "NAD": { name: "Namibia",          flag: "na" },
-    "NGN": { name: "Nigeria",          flag: "ng" },
-    "NIO": { name: "Nicaragua",        flag: "ni" },
-    "NOK": { name: "Norway",           flag: "no" },
-    "NPR": { name: "Nepal",            flag: "np" },
-    "NZD": { name: "New Zealand",      flag: "nz" },
-    "OMR": { name: "Oman",             flag: "om" },
-    "PAB": { name: "Panama",           flag: "pa" },
-    "PEN": { name: "Peru",             flag: "pe" },
-    "PGK": { name: "Papua New Guinea", flag: "pg" },
-    "PHP": { name: "Philippines",      flag: "ph" },
-    "PKR": { name: "Pakistan",         flag: "pk" },
-    "PLN": { name: "Poland",           flag: "pl" },
-    "PYG": { name: "Paraguay",         flag: "py" },
-    "QAR": { name: "Qatar",            flag: "qa" },
-    "RON": { name: "Romania",          flag: "ro" },
-    "RSD": { name: "Serbia",           flag: "rs" },
-    "RUB": { name: "Russia",           flag: "ru" },
-    "RWF": { name: "Rwanda",           flag: "rw" },
-    "SAR": { name: "Saudi Arabia",     flag: "sa" },
-    "SBD": { name: "Solomon Islands",  flag: "sb" },
-    "SCR": { name: "Seychelles",       flag: "sc" },
-    "SDG": { name: "Sudan",            flag: "sd" },
-    "SEK": { name: "Sweden",           flag: "se" },
-    "SGD": { name: "Singapore",        flag: "sg" },
-    "SLL": { name: "Sierra Leone",     flag: "sl" },
-    "SOS": { name: "Somalia",          flag: "so" },
-    "SRD": { name: "Suriname",         flag: "sr" },
-    "SSP": { name: "South Sudan",      flag: "ss" },
-    "SYP": { name: "Syria",            flag: "sy" },
-    "SZL": { name: "Eswatini",         flag: "sz" },
-    "THB": { name: "Thailand",         flag: "th" },
-    "TJS": { name: "Tajikistan",       flag: "tj" },
-    "TMT": { name: "Turkmenistan",     flag: "tm" },
-    "TND": { name: "Tunisia",          flag: "tn" },
-    "TOP": { name: "Tonga",            flag: "to" },
-    "TRY": { name: "Turkey",           flag: "tr" },
-    "TTD": { name: "Trinidad & Tobago",flag: "tt" },
-    "TWD": { name: "Taiwan",           flag: "tw" },
-    "TZS": { name: "Tanzania",         flag: "tz" },
-    "UAH": { name: "Ukraine",          flag: "ua" },
-    "UGX": { name: "Uganda",           flag: "ug" },
-    "USD": { name: "United States",    flag: "us" },
-    "UYU": { name: "Uruguay",          flag: "uy" },
-    "UZS": { name: "Uzbekistan",       flag: "uz" },
-    "VEF": { name: "Venezuela",        flag: "ve" },
-    "VND": { name: "Vietnam",          flag: "vn" },
-    "VUV": { name: "Vanuatu",          flag: "vu" },
-    "WST": { name: "Samoa",            flag: "ws" },
-    "XAF": { name: "Central Africa",   flag: "cf" },
-    "XCD": { name: "E. Caribbean",     flag: "vc" },
-    "XOF": { name: "West Africa",      flag: "bf" },
-    "XPF": { name: "French Polynesia", flag: "pf" },
-    "YER": { name: "Yemen",            flag: "ye" },
-    "ZAR": { name: "South Africa",     flag: "za" },
-    "ZMW": { name: "Zambia",           flag: "zm" },
-    "ZWD": { name: "Zimbabwe",         flag: "zw" },
+/* ── Currency data ────────────────────────── */
+const C = {
+    AED:{n:"UAE Dirham",f:"ae"},AFN:{n:"Afghan Afghani",f:"af"},ALL:{n:"Albanian Lek",f:"al"},
+    AMD:{n:"Armenian Dram",f:"am"},ANG:{n:"Neth. Antillean Guilder",f:"an"},AOA:{n:"Angolan Kwanza",f:"ao"},
+    ARS:{n:"Argentine Peso",f:"ar"},AUD:{n:"Australian Dollar",f:"au"},AWG:{n:"Aruban Florin",f:"aw"},
+    AZN:{n:"Azerbaijani Manat",f:"az"},BAM:{n:"Bosnian Mark",f:"ba"},BBD:{n:"Barbadian Dollar",f:"bb"},
+    BDT:{n:"Bangladeshi Taka",f:"bd"},BGN:{n:"Bulgarian Lev",f:"bg"},BHD:{n:"Bahraini Dinar",f:"bh"},
+    BIF:{n:"Burundian Franc",f:"bi"},BMD:{n:"Bermudian Dollar",f:"bm"},BND:{n:"Brunei Dollar",f:"bn"},
+    BOB:{n:"Bolivian Boliviano",f:"bo"},BRL:{n:"Brazilian Real",f:"br"},BSD:{n:"Bahamian Dollar",f:"bs"},
+    BTN:{n:"Bhutanese Ngultrum",f:"bt"},BWP:{n:"Botswana Pula",f:"bw"},BYN:{n:"Belarusian Ruble",f:"by"},
+    BZD:{n:"Belize Dollar",f:"bz"},CAD:{n:"Canadian Dollar",f:"ca"},CDF:{n:"Congolese Franc",f:"cd"},
+    CHF:{n:"Swiss Franc",f:"ch"},CLP:{n:"Chilean Peso",f:"cl"},CNY:{n:"Chinese Yuan",f:"cn"},
+    COP:{n:"Colombian Peso",f:"co"},CRC:{n:"Costa Rican Colón",f:"cr"},CUP:{n:"Cuban Peso",f:"cu"},
+    CVE:{n:"Cape Verdean Escudo",f:"cv"},CZK:{n:"Czech Koruna",f:"cz"},DJF:{n:"Djiboutian Franc",f:"dj"},
+    DKK:{n:"Danish Krone",f:"dk"},DOP:{n:"Dominican Peso",f:"do"},DZD:{n:"Algerian Dinar",f:"dz"},
+    EGP:{n:"Egyptian Pound",f:"eg"},ETB:{n:"Ethiopian Birr",f:"et"},EUR:{n:"Euro",f:"eu"},
+    FJD:{n:"Fijian Dollar",f:"fj"},GBP:{n:"British Pound",f:"gb"},GEL:{n:"Georgian Lari",f:"ge"},
+    GHS:{n:"Ghanaian Cedi",f:"gh"},GTQ:{n:"Guatemalan Quetzal",f:"gt"},GYD:{n:"Guyanese Dollar",f:"gy"},
+    HKD:{n:"Hong Kong Dollar",f:"hk"},HNL:{n:"Honduran Lempira",f:"hn"},HTG:{n:"Haitian Gourde",f:"ht"},
+    HUF:{n:"Hungarian Forint",f:"hu"},IDR:{n:"Indonesian Rupiah",f:"id"},ILS:{n:"Israeli New Shekel",f:"il"},
+    INR:{n:"Indian Rupee",f:"in"},IQD:{n:"Iraqi Dinar",f:"iq"},ISK:{n:"Icelandic Króna",f:"is"},
+    JMD:{n:"Jamaican Dollar",f:"jm"},JOD:{n:"Jordanian Dinar",f:"jo"},JPY:{n:"Japanese Yen",f:"jp"},
+    KES:{n:"Kenyan Shilling",f:"ke"},KGS:{n:"Kyrgyzstani Som",f:"kg"},KHR:{n:"Cambodian Riel",f:"kh"},
+    KRW:{n:"South Korean Won",f:"kr"},KWD:{n:"Kuwaiti Dinar",f:"kw"},KZT:{n:"Kazakhstani Tenge",f:"kz"},
+    LAK:{n:"Lao Kip",f:"la"},LBP:{n:"Lebanese Pound",f:"lb"},LKR:{n:"Sri Lankan Rupee",f:"lk"},
+    LYD:{n:"Libyan Dinar",f:"ly"},MAD:{n:"Moroccan Dirham",f:"ma"},MDL:{n:"Moldovan Leu",f:"md"},
+    MGA:{n:"Malagasy Ariary",f:"mg"},MMK:{n:"Myanmar Kyat",f:"mm"},MNT:{n:"Mongolian Tögrög",f:"mn"},
+    MXN:{n:"Mexican Peso",f:"mx"},MYR:{n:"Malaysian Ringgit",f:"my"},NGN:{n:"Nigerian Naira",f:"ng"},
+    NOK:{n:"Norwegian Krone",f:"no"},NPR:{n:"Nepalese Rupee",f:"np"},NZD:{n:"New Zealand Dollar",f:"nz"},
+    OMR:{n:"Omani Rial",f:"om"},PAB:{n:"Panamanian Balboa",f:"pa"},PEN:{n:"Peruvian Sol",f:"pe"},
+    PHP:{n:"Philippine Peso",f:"ph"},PKR:{n:"Pakistani Rupee",f:"pk"},PLN:{n:"Polish Złoty",f:"pl"},
+    PYG:{n:"Paraguayan Guaraní",f:"py"},QAR:{n:"Qatari Riyal",f:"qa"},RON:{n:"Romanian Leu",f:"ro"},
+    RSD:{n:"Serbian Dinar",f:"rs"},RUB:{n:"Russian Ruble",f:"ru"},RWF:{n:"Rwandan Franc",f:"rw"},
+    SAR:{n:"Saudi Riyal",f:"sa"},SEK:{n:"Swedish Krona",f:"se"},SGD:{n:"Singapore Dollar",f:"sg"},
+    SOS:{n:"Somali Shilling",f:"so"},SRD:{n:"Surinamese Dollar",f:"sr"},SYP:{n:"Syrian Pound",f:"sy"},
+    THB:{n:"Thai Baht",f:"th"},TND:{n:"Tunisian Dinar",f:"tn"},TRY:{n:"Turkish Lira",f:"tr"},
+    TTD:{n:"Trinidad & Tobago Dollar",f:"tt"},TWD:{n:"New Taiwan Dollar",f:"tw"},TZS:{n:"Tanzanian Shilling",f:"tz"},
+    UAH:{n:"Ukrainian Hryvnia",f:"ua"},UGX:{n:"Ugandan Shilling",f:"ug"},USD:{n:"United States Dollar",f:"us"},
+    UYU:{n:"Uruguayan Peso",f:"uy"},UZS:{n:"Uzbekistani Som",f:"uz"},VND:{n:"Vietnamese Dong",f:"vn"},
+    YER:{n:"Yemeni Rial",f:"ye"},ZAR:{n:"South African Rand",f:"za"},ZMW:{n:"Zambian Kwacha",f:"zm"},
 };
 
-/* ─── Zero-decimal currencies ───────────────────────────────── */
-const ZERO_DECIMAL = new Set(["JPY","KRW","IDR","VND","CLP","PYG","UGX","RWF","BIF","GNF","KMF","XOF","XAF","XPF"]);
+const ZERO = new Set(["JPY","KRW","IDR","VND","CLP","PYG","UGX","RWF","BIF","GNF","KMF","XOF","XAF","XPF"]);
+const FLAG = c => `https://flagcdn.com/w40/${C[c]?.f ?? "un"}.png`;
+const $    = id => document.getElementById(id);
 
-/* ─── Helpers ───────────────────────────────────────────────── */
-const $ = id => document.getElementById(id);
-const FLAG = code => `https://flagcdn.com/w40/${code}.png`;
-
-function fmt(num, currency) {
-    const dec = ZERO_DECIMAL.has(currency) ? 0 : 2;
-    return num.toLocaleString("en-US", { minimumFractionDigits: dec, maximumFractionDigits: dec });
+function fmt(n, cur) {
+    const d = ZERO.has(cur) ? 0 : 2;
+    return n.toLocaleString("en-US", {minimumFractionDigits:d, maximumFractionDigits:d});
 }
 
-/* ─── State ─────────────────────────────────────────────────── */
-let fromCur = "USD";
-let toCur   = "EUR";
-let rates   = {};
+/* ── State ───────────────────────────────── */
+let from = "USD", to = "EUR", rates = {}, openType = null;
 
-/* ─── DOM Refs ──────────────────────────────────────────────── */
-const amountInput   = $("amount");
-const fromBtn       = $("from-btn");
-const toBtn         = $("to-btn");
-const fromDropdown  = $("from-dropdown");
-const toDropdown    = $("to-dropdown");
-const fromSearch    = $("from-search");
-const toSearch      = $("to-search");
-const fromList      = $("from-list");
-const toList        = $("to-list");
-const swapBtn       = $("swap-btn");
-const convertBtn    = $("convert-btn");
-const resultDisplay = $("result-display");
-const rateText      = $("rate-text");
-const lastUpdated   = $("last-updated");
+/* ── Refs ────────────────────────────────── */
+const amtEl    = $("amount");
+const resEl    = $("result-val");
+const spinEl   = $("result-spin");
+const rfBadge  = $("rate-from-badge");
+const rtBadge  = $("rate-to-badge");
+const rUpdate  = $("rate-updated");
+const heroAmt  = $("hero-amount");
 
-/* ─── Update selector UI ────────────────────────────────────── */
-function updateSelectors() {
-    const from = CURRENCIES[fromCur];
-    const to   = CURRENCIES[toCur];
-
-    $("from-flag").src = FLAG(from.flag);
-    $("from-flag").alt = fromCur;
-    $("from-code").textContent = fromCur;
-
-    $("to-flag").src = FLAG(to.flag);
-    $("to-flag").alt = toCur;
-    $("to-code").textContent = toCur;
+/* ── Sync UI ─────────────────────────────── */
+function syncUI() {
+    ["from","to"].forEach(t => {
+        const cur = t === "from" ? from : to;
+        const d   = C[cur]; if (!d) return;
+        $(`${t}-flag`).src = FLAG(cur);
+        $(`${t}-flag`).alt = cur;
+        $(`${t}-code`).textContent = cur;
+        $(`${t}-country`).textContent = d.n;
+        if (t === "from") $("from-ghost").textContent = cur;
+    });
+    const a = parseFloat(amtEl.value) || 1;
+    heroAmt.textContent = `${fmt(a, from)} ${from}`;
+    rfBadge.textContent = `1 ${from}`;
 }
 
-/* ─── Convert ───────────────────────────────────────────────── */
+/* ── Convert ─────────────────────────────── */
 function convert() {
-    const amount = parseFloat(amountInput.value);
-    if (!amount || isNaN(amount) || amount <= 0 || !rates[toCur]) {
-        resultDisplay.textContent = "—";
-        resultDisplay.classList.remove("loading");
-        rateText.textContent = "Enter an amount above";
+    const a = parseFloat(amtEl.value);
+    heroAmt.textContent = `${fmt(isNaN(a)||a<=0?1:a, from)} ${from}`;
+
+    if (!a || isNaN(a) || a <= 0 || !rates[to]) {
+        resEl.textContent = "—";
+        resEl.classList.add("dim");
+        rtBadge.textContent = "—";
+        rtBadge.style.background = "";
         return;
     }
+    const rate   = rates[to];
+    const result = a * rate;
 
-    const rate   = rates[toCur];
-    const result = amount * rate;
+    resEl.textContent = fmt(result, to);
+    resEl.classList.remove("dim");
+    resEl.classList.remove("flash");
+    void resEl.offsetWidth;
+    resEl.classList.add("flash");
 
-    resultDisplay.textContent = fmt(result, toCur);
-    resultDisplay.classList.remove("loading");
-    rateText.textContent = `1 ${fromCur} = ${fmt(rate, toCur)} ${toCur}`;
+    rtBadge.textContent = `${fmt(rate, to)} ${to}`;
+    rfBadge.textContent = `1 ${from}`;
 }
 
-/* ─── Fetch Rates ───────────────────────────────────────────── */
+/* ── Fetch ───────────────────────────────── */
 async function fetchRates() {
-    convertBtn.classList.add("loading");
-    resultDisplay.textContent = "…";
-    resultDisplay.classList.add("loading");
+    spinEl.classList.remove("hidden");
+    resEl.classList.add("dim");
+    $("live-txt").textContent = "Syncing";
 
     try {
-        const res  = await fetch(`https://open.er-api.com/v6/latest/${fromCur}`);
+        const res  = await fetch(`https://open.er-api.com/v6/latest/${from}`);
         const data = await res.json();
-
-        if (data.result === "success") {
-            rates = data.rates;
-            const d = new Date(data.time_last_update_utc);
-            lastUpdated.textContent =
-                `Rates updated · ${d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
-            convert();
-        } else throw new Error();
+        if (data.result !== "success") throw new Error();
+        rates = data.rates;
+        const d = new Date(data.time_last_update_utc);
+        rUpdate.textContent = d.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"});
+        $("live-txt").textContent = "Live";
+        convert();
     } catch {
-        lastUpdated.textContent = "Could not fetch rates — check connection";
-        resultDisplay.textContent = "err";
-        rateText.textContent = "Rate fetch failed. Try again.";
+        $("live-txt").textContent = "Offline";
+        resEl.textContent = "—";
+        resEl.classList.add("dim");
+        rUpdate.textContent = "fetch failed";
     } finally {
-        convertBtn.classList.remove("loading");
+        spinEl.classList.add("hidden");
+        resEl.classList.remove("dim");
     }
 }
 
-/* ─── Build dropdown list ───────────────────────────────────── */
-function buildList(listEl, type, filter = "") {
-    listEl.innerHTML = "";
-    const q = filter.toUpperCase();
-
-    Object.keys(CURRENCIES)
-        .filter(c => c.includes(q) || CURRENCIES[c].name.toUpperCase().includes(q))
+/* ── Dropdown ────────────────────────────── */
+function buildList(ulEl, type, filter = "") {
+    ulEl.innerHTML = "";
+    const q   = filter.toUpperCase();
+    const sel = type === "from" ? from : to;
+    Object.keys(C)
+        .filter(c => c.includes(q) || C[c].n.toUpperCase().includes(q))
         .forEach(code => {
-            const cur = CURRENCIES[code];
-            const li  = document.createElement("li");
-            li.className = "dd-item" + (code === (type === "from" ? fromCur : toCur) ? " active" : "");
+            const d  = C[code];
+            const li = document.createElement("li");
+            li.className = "dd-li" + (code === sel ? " on" : "");
+            li.setAttribute("role","option");
+            li.setAttribute("aria-selected", code === sel ? "true" : "false");
             li.innerHTML = `
-                <img src="${FLAG(cur.flag)}" alt="${code}" width="22" loading="lazy">
-                <span class="dd-code">${code}</span>
-                <span class="dd-country">${cur.name}</span>
+                <img src="${FLAG(code)}" alt="${code}" width="24" height="16" loading="lazy">
+                <span class="li-code">${code}</span>
+                <span class="li-name">${d.n}</span>
             `;
             li.addEventListener("mousedown", e => {
                 e.preventDefault();
-                if (type === "from") { fromCur = code; fetchRates(); }
-                else                 { toCur   = code; convert();    }
-                updateSelectors();
-                closeAll();
+                if (type === "from") { from = code; fetchRates(); }
+                else                 { to   = code; convert();    }
+                syncUI();
+                closeDD();
             });
-            listEl.appendChild(li);
+            ulEl.appendChild(li);
         });
 }
 
-/* ─── Dropdown open / close ─────────────────────────────────── */
-let openType = null;
-
-function openDropdown(type) {
-    closeAll();
+function openDD(type) {
+    closeDD();
     openType = type;
-
-    const btn = type === "from" ? fromBtn : toBtn;
-    const dd  = type === "from" ? fromDropdown : toDropdown;
-    const inp = type === "from" ? fromSearch : toSearch;
-    const lst = type === "from" ? fromList : toList;
-
-    btn.classList.add("open");
-    btn.setAttribute("aria-expanded", "true");
-    dd.classList.add("open");
-    buildList(lst, type);
-    inp.value = "";
-    // Small delay so the animation starts before focus steals it
-    requestAnimationFrame(() => inp.focus());
+    $(`${type}-btn`).classList.add("open");
+    $(`${type}-btn`).setAttribute("aria-expanded","true");
+    $(`${type}-dd`).classList.add("open");
+    buildList($(`${type}-ul`), type);
+    $(`${type}-search`).value = "";
+    requestAnimationFrame(() => $(`${type}-search`).focus());
 }
 
-function closeAll() {
-    [fromBtn, toBtn].forEach(b => { b.classList.remove("open"); b.setAttribute("aria-expanded", "false"); });
-    [fromDropdown, toDropdown].forEach(d => d.classList.remove("open"));
+function closeDD() {
+    if (!openType) return;
+    $(`${openType}-btn`).classList.remove("open");
+    $(`${openType}-btn`).setAttribute("aria-expanded","false");
+    $(`${openType}-dd`).classList.remove("open");
     openType = null;
 }
 
-/* ─── Event Listeners ───────────────────────────────────────── */
+/* ── Events ──────────────────────────────── */
+$("from-btn").addEventListener("click", () => openType === "from" ? closeDD() : openDD("from"));
+$("to-btn").addEventListener("click",   () => openType === "to"   ? closeDD() : openDD("to"));
 
-fromBtn.addEventListener("click", () => openType === "from" ? closeAll() : openDropdown("from"));
-toBtn.addEventListener("click",   () => openType === "to"   ? closeAll() : openDropdown("to"));
-
-[fromBtn, toBtn].forEach((btn, i) => {
-    btn.addEventListener("keydown", e => {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDropdown(i === 0 ? "from" : "to"); }
+[$("from-btn"), $("to-btn")].forEach((el, i) => {
+    el.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDD(i === 0 ? "from" : "to"); }
     });
 });
 
-fromSearch.addEventListener("input", e => buildList(fromList, "from", e.target.value));
-toSearch.addEventListener("input",   e => buildList(toList,   "to",   e.target.value));
+$("from-search").addEventListener("input", e => buildList($("from-ul"), "from", e.target.value));
+$("to-search").addEventListener("input",   e => buildList($("to-ul"),   "to",   e.target.value));
 
 document.addEventListener("mousedown", e => {
-    if (!e.target.closest(".input-block")) closeAll();
+    if (!e.target.closest(".slot") && !e.target.closest(".dd")) closeDD();
 });
-document.addEventListener("keydown", e => {
-    if (e.key === "Escape") closeAll();
-});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeDD(); });
 
-swapBtn.addEventListener("click", () => {
-    [fromCur, toCur] = [toCur, fromCur];
-    updateSelectors();
+$("swap-btn").addEventListener("click", () => {
+    [from, to] = [to, from];
+    syncUI();
     fetchRates();
 });
 
-amountInput.addEventListener("input", convert);
+amtEl.addEventListener("input", convert);
+amtEl.addEventListener("focus", () => amtEl.select());
 
-convertBtn.addEventListener("click", fetchRates);
+/* ── Animated canvas mesh background ─────── */
+(function initCanvas() {
+    const canvas = $("bg-canvas");
+    const ctx    = canvas.getContext("2d");
+    let W, H, pts = [];
 
-/* ─── Init ──────────────────────────────────────────────────── */
-updateSelectors();
+    const COLORS = ["#22d3ee","#f59e0b","#6366f1","#22c55e"];
+    const N = 6;
+
+    function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    }
+
+    function makePoints() {
+        pts = Array.from({length: N}, (_, i) => ({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            vx: (Math.random() - .5) * .4,
+            vy: (Math.random() - .5) * .4,
+            color: COLORS[i % COLORS.length],
+            r: 180 + Math.random() * 160,
+        }));
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        pts.forEach(p => {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < -p.r) p.x = W + p.r;
+            if (p.x > W + p.r) p.x = -p.r;
+            if (p.y < -p.r) p.y = H + p.r;
+            if (p.y > H + p.r) p.y = -p.r;
+
+            const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+            g.addColorStop(0, p.color + "28");
+            g.addColorStop(1, p.color + "00");
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = g;
+            ctx.fill();
+        });
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener("resize", () => { resize(); makePoints(); });
+    resize();
+    makePoints();
+    draw();
+})();
+
+/* ── Init ─────────────────────────────────── */
+syncUI();
 fetchRates();

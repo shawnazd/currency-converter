@@ -10,103 +10,686 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #0f0f14;
+        --surface: #17171f;
+        --surface2: #1e1e28;
+        --surface3: #252532;
+        --border: #2a2a38;
+        --border2: #323244;
+
+        --blue: #4f8ef7;
+        --blue-bg: rgba(79, 142, 247, 0.1);
+        --blue-glow: rgba(79, 142, 247, 0.2);
+
+        --green: #34d399;
+        --green-bg: rgba(52, 211, 153, 0.08);
+
+        --text1: #f1f1f8;
+        --text2: #8888a8;
+        --text3: #44445a;
+
+        --radius: 16px;
+        --radius-sm: 10px;
+        --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      html {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        font-family: "Geist", sans-serif;
+        background: var(--bg);
+        color: var(--text1);
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem 1rem 2.5rem;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ── Page ── */
+      .page {
+        width: 100%;
+        max-width: 420px;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        animation: up 0.5s var(--ease) both;
+      }
+      @keyframes up {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── Header ── */
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text1);
+        letter-spacing: -0.01em;
+      }
+      .logo-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--blue);
+        box-shadow: 0 0 10px var(--blue-glow);
+        animation: pulse 2.5s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(0.7);
+          opacity: 0.5;
+        }
+      }
+      .live-tag {
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: var(--green);
+        background: var(--green-bg);
+        border: 1px solid rgba(52, 211, 153, 0.2);
+        border-radius: 100px;
+        padding: 0.22rem 0.65rem;
+        letter-spacing: 0.04em;
+      }
+
+      /* ── Headline ── */
+      .headline {
+        padding: 0.25rem 0 0;
+      }
+      .headline h1 {
+        font-size: clamp(1.75rem, 7vw, 2.4rem);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        line-height: 1.1;
+        color: var(--text1);
+      }
+      .hl-sub {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: var(--text3);
+        margin-top: 0.55rem;
+        letter-spacing: 0.01em;
+        font-family: "Geist Mono", monospace;
+      }
+
+      /* ── Card ── */
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        overflow: visible;
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.04) inset,
+          0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+
+      /* ── Slot ── */
+      .slot {
+        padding: 1.5rem 1.5rem 1.4rem;
+        position: relative;
+      }
+      .slot-from {
+        border-radius: 24px 24px 0 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .slot-to {
+        border-radius: 0 0 24px 24px;
+      }
+
+      .slot-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+      .slot-label {
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text3);
+      }
+
+      /* ── Selector ── */
+      .selector {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 0.5rem 0.7rem;
+        cursor: pointer;
+        user-select: none;
+        transition:
+          border-color 0.15s var(--ease),
+          background 0.15s var(--ease);
+      }
+      .selector:hover {
+        border-color: var(--border2);
+        background: var(--surface3);
+      }
+      .selector.open {
+        border-color: var(--blue);
+        background: var(--blue-bg);
+        box-shadow: 0 0 0 3px var(--blue-glow);
+      }
+      .selector:active {
+        transform: scale(0.97);
+      }
+      .selector.open .sel-caret {
+        transform: rotate(180deg);
+        color: var(--blue);
+      }
+
+      .sel-flag {
+        width: 26px;
+        height: 17px;
+        border-radius: 4px;
+        object-fit: cover;
+        background: var(--surface3);
+        flex-shrink: 0;
+      }
+      .sel-code {
+        font-family: "Geist Mono", monospace;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text1);
+        letter-spacing: 0.04em;
+      }
+      .sel-caret {
+        width: 12px;
+        height: 12px;
+        color: var(--text3);
+        flex-shrink: 0;
+        transition:
+          transform 0.15s var(--ease),
+          color 0.15s;
+      }
+      .sel-caret path {
+        stroke: currentColor;
+        stroke-width: 2.5;
+        fill: none;
+      }
+
+      /* ── Amount input ── */
+      .amt-row {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+      }
+      .amt-input {
+        flex: 1;
+        min-width: 0;
+        background: none;
+        border: none;
+        outline: none;
+        font-family: "Geist Mono", monospace;
+        font-size: clamp(2rem, 9vw, 3rem);
+        font-weight: 300;
+        letter-spacing: -0.03em;
+        color: var(--text1);
+        caret-color: var(--blue);
+        -moz-appearance: textfield;
+        appearance: textfield;
+        padding: 0;
+      }
+      .amt-input::-webkit-outer-spin-button,
+      .amt-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
+      .amt-input::placeholder {
+        color: var(--text3);
+      }
+
+      .amt-cur {
+        font-family: "Geist Mono", monospace;
+        font-size: 0.78rem;
+        font-weight: 400;
+        color: var(--text3);
+        letter-spacing: 0.06em;
+        flex-shrink: 0;
+        padding-bottom: 0.35rem;
+      }
+
+      .slot-name {
+        margin-top: 0.5rem;
+        font-size: 0.72rem;
+        color: var(--text3);
+        font-style: italic;
+      }
+
+      /* ── Result ── */
+      .result-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        min-height: clamp(2.8rem, 9vw, 3.8rem);
+      }
+      .result-num {
+        font-family: "Geist Mono", monospace;
+        font-size: clamp(2rem, 9vw, 3rem);
+        font-weight: 300;
+        letter-spacing: -0.03em;
+        color: var(--blue);
+      }
+      .result-num.empty {
+        color: var(--text3);
+      }
+      .result-num.pop {
+        animation: numPop 0.3s var(--ease);
+      }
+      @keyframes numPop {
+        from {
+          opacity: 0.2;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--border2);
+        border-top-color: var(--blue);
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+        flex-shrink: 0;
+      }
+      .spinner.hidden {
+        display: none;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ── Swap bar ── */
+      .swap-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0 1.5rem;
+      }
+      .swap-line {
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+      .swap-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition:
+          background 0.15s var(--ease),
+          border-color 0.15s var(--ease),
+          transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+          color 0.15s;
+      }
+      .swap-btn:hover {
+        background: var(--blue-bg);
+        border-color: var(--blue);
+        color: var(--blue);
+        transform: rotate(180deg);
+      }
+      .swap-btn:active {
+        transform: rotate(180deg) scale(0.9);
+      }
+      .swap-btn svg {
+        pointer-events: none;
+      }
+
+      /* ── Rate strip ── */
+      .rate-strip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.85rem 1.5rem;
+        border-top: 1px solid var(--border);
+        border-radius: 0 0 24px 24px;
+        background: rgba(255, 255, 255, 0.015);
+        gap: 0.75rem;
+      }
+      .rate-val {
+        font-family: "Geist Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: var(--text2);
+      }
+      .rate-val span {
+        color: var(--blue);
+      }
+      .rate-date {
+        font-family: "Geist Mono", monospace;
+        font-size: 0.65rem;
+        color: var(--text3);
+        white-space: nowrap;
+      }
+
+      /* ── Dropdown ── */
+      .dd {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: var(--radius);
+        box-shadow:
+          0 24px 64px rgba(0, 0, 0, 0.7),
+          0 4px 16px rgba(0, 0, 0, 0.4);
+        z-index: 999;
+        max-height: 290px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-6px) scale(0.98);
+        pointer-events: none;
+        transition:
+          opacity 0.16s var(--ease),
+          transform 0.16s var(--ease);
+      }
+      .dd.open {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: all;
+      }
+      .dd-search-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.7rem 1rem;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .dd-search-wrap svg {
+        color: var(--text3);
+        flex-shrink: 0;
+      }
+      .dd-search {
+        flex: 1;
+        background: none;
+        border: none;
+        outline: none;
+        font-family: "Geist", sans-serif;
+        font-size: 0.85rem;
+        color: var(--text1);
+      }
+      .dd-search::placeholder {
+        color: var(--text3);
+      }
+
+      .dd-list {
+        list-style: none;
+        overflow-y: auto;
+        flex: 1;
+        scrollbar-width: thin;
+        scrollbar-color: var(--border2) transparent;
+      }
+      .dd-list::-webkit-scrollbar {
+        width: 3px;
+      }
+      .dd-list::-webkit-scrollbar-thumb {
+        background: var(--border2);
+        border-radius: 2px;
+      }
+
+      .dd-item {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.62rem 1rem;
+        cursor: pointer;
+        transition: background 0.12s;
+      }
+      .dd-item:hover,
+      .dd-item.active {
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .dd-item.active .di-code {
+        color: var(--blue);
+      }
+      .dd-item img {
+        width: 22px;
+        height: 14px;
+        border-radius: 3px;
+        object-fit: cover;
+        background: var(--surface3);
+        flex-shrink: 0;
+      }
+      .di-code {
+        font-family: "Geist Mono", monospace;
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--text1);
+        min-width: 38px;
+        letter-spacing: 0.04em;
+      }
+      .di-name {
+        font-size: 0.76rem;
+        color: var(--text2);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* ── Social links ── */
+      .socials {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.65rem;
+      }
+      .soc {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        text-decoration: none;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--text2);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        padding: 0.4rem 0.9rem 0.4rem 0.7rem;
+        transition: all 0.15s var(--ease);
+      }
+      .soc:hover {
+        transform: translateY(-2px);
+        border-color: var(--border2);
+        color: var(--text1);
+      }
+      .soc-fb:hover {
+        color: #4f8ef7;
+        border-color: rgba(79, 142, 247, 0.4);
+        background: rgba(79, 142, 247, 0.08);
+      }
+      .soc-gh:hover {
+        color: var(--text1);
+      }
+      .soc svg {
+        flex-shrink: 0;
+      }
+      .soc-sep {
+        width: 1px;
+        height: 18px;
+        background: var(--border);
+      }
+
+      /* ── Footer ── */
+      .footer {
+        text-align: center;
+        font-size: 0.62rem;
+        font-family: "Geist Mono", monospace;
+        color: var(--text3);
+        letter-spacing: 0.03em;
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--blue);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+
+      @media (max-width: 380px) {
+        body {
+          padding: 1.1rem 0.85rem 2rem;
+        }
+        .slot {
+          padding: 1.25rem 1.25rem 1.15rem;
+        }
+        .swap-bar {
+          padding: 0 1.25rem;
+        }
+        .rate-strip {
+          padding: 0.8rem 1.25rem;
+        }
+        .amt-input,
+        .result-num {
+          font-size: 1.9rem;
+        }
+        .headline h1 {
+          font-size: 1.6rem;
+        }
+      }
+      @media (min-width: 500px) {
+        body {
+          padding: 2.5rem 1.5rem 3rem;
+        }
+        .slot {
+          padding: 1.75rem 1.75rem 1.6rem;
+        }
+        .swap-bar {
+          padding: 0 1.75rem;
+        }
+        .rate-strip {
+          padding: 0.95rem 1.75rem;
+        }
+      }
+    </style>
   </head>
   <body>
-    <!-- Layered Background -->
-    <div class="bg">
-      <div class="bg-blob b1"></div>
-      <div class="bg-blob b2"></div>
-      <div class="bg-blob b3"></div>
-      <div class="bg-grid"></div>
-    </div>
-
     <div class="page">
-      <!-- Top bar -->
-      <header class="topbar">
-        <div class="brand">
-          <div class="brand-icon">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 6v6l4 2" />
-            </svg>
-          </div>
-          <span class="brand-name">Currency Converter</span>
+      <!-- Header -->
+      <header class="header">
+        <div class="logo">
+          <div class="logo-dot"></div>
+          Currency Converter
         </div>
-        <div class="live-badge">
-          <span class="live-dot"></span>
-          Live Rates
-        </div>
+        <span class="live-tag" id="live-tag">Live</span>
       </header>
 
-      <!-- Hero label -->
-      <div class="hero">
-        <h1 class="hero-title">
-          Convert <span class="hero-accent">currencies</span><br />instantly.
-        </h1>
-        <p class="hero-sub" id="last-updated">Fetching live exchange rates…</p>
+      <!-- Headline -->
+      <div class="headline">
+        <h1 id="headline-text">Convert money<br />instantly.</h1>
+        <span class="hl-sub" id="hl-sub">Loading live exchange rates…</span>
       </div>
 
-      <!-- Main converter card -->
+      <!-- Card -->
       <div class="card">
-        <!-- Amount -->
-        <div class="input-block">
-          <label class="lbl">You send</label>
-          <div class="amount-row">
+        <!-- FROM -->
+        <div class="slot slot-from" id="slot-from">
+          <div class="slot-top">
+            <span class="slot-label">You send</span>
             <div
-              class="currency-pill from-pill"
+              class="selector"
               id="from-btn"
               tabindex="0"
               role="button"
               aria-expanded="false"
             >
-              <img class="pill-flag" id="from-flag" src="" alt="" width="26" />
-              <span class="pill-code" id="from-code">USD</span>
-              <svg
-                class="pill-caret"
-                id="from-caret"
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="3"
-              >
-                <polyline points="6 9 12 15 18 9" />
+              <img
+                class="sel-flag"
+                id="from-flag"
+                src=""
+                alt=""
+                width="26"
+                height="17"
+              />
+              <span class="sel-code" id="from-code">USD</span>
+              <svg class="sel-caret" viewBox="0 0 24 24">
+                <path d="M6 9l6 6 6-6" />
               </svg>
             </div>
+          </div>
+          <div class="amt-row">
             <input
-              type="number"
               id="amount"
+              type="number"
+              class="amt-input"
               value="1"
               min="0"
               step="any"
-              class="amount-input"
-              placeholder="0.00"
               autocomplete="off"
               inputmode="decimal"
+              spellcheck="false"
+              placeholder="0"
             />
+            <span class="amt-cur" id="from-cur-tag">USD</span>
           </div>
+          <div class="slot-name" id="from-name">United States Dollar</div>
+
           <!-- From dropdown -->
-          <div class="dropdown" id="from-dropdown">
-            <div class="dd-search-row">
+          <div class="dd" id="from-dd">
+            <div class="dd-search-wrap">
               <svg
-                width="13"
-                height="13"
+                width="14"
+                height="14"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2.5"
+                stroke-width="2"
               >
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -115,7 +698,7 @@
                 type="text"
                 id="from-search"
                 class="dd-search"
-                placeholder="Search…"
+                placeholder="Search currency…"
                 autocomplete="off"
               />
             </div>
@@ -124,7 +707,7 @@
         </div>
 
         <!-- Swap -->
-        <div class="swap-row">
+        <div class="swap-bar">
           <div class="swap-line"></div>
           <button class="swap-btn" id="swap-btn" aria-label="Swap currencies">
             <svg
@@ -135,51 +718,56 @@
               stroke="currentColor"
               stroke-width="2.5"
             >
-              <path d="M7 16V4m0 0L3 8m4-4l4 4" />
-              <path d="M17 8v12m0 0l4-4m-4 4l-4-4" />
+              <polyline points="17 1 21 5 17 9" />
+              <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+              <polyline points="7 23 3 19 7 15" />
+              <path d="M21 13v2a4 4 0 0 1-4 4H3" />
             </svg>
           </button>
           <div class="swap-line"></div>
         </div>
 
-        <!-- To -->
-        <div class="input-block">
-          <label class="lbl">You receive</label>
-          <div class="amount-row">
+        <!-- TO -->
+        <div class="slot slot-to" id="slot-to">
+          <div class="slot-top">
+            <span class="slot-label">You receive</span>
             <div
-              class="currency-pill to-pill"
+              class="selector"
               id="to-btn"
               tabindex="0"
               role="button"
               aria-expanded="false"
             >
-              <img class="pill-flag" id="to-flag" src="" alt="" width="26" />
-              <span class="pill-code" id="to-code">EUR</span>
-              <svg
-                class="pill-caret"
-                id="to-caret"
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="3"
-              >
-                <polyline points="6 9 12 15 18 9" />
+              <img
+                class="sel-flag"
+                id="to-flag"
+                src=""
+                alt=""
+                width="26"
+                height="17"
+              />
+              <span class="sel-code" id="to-code">EUR</span>
+              <svg class="sel-caret" viewBox="0 0 24 24">
+                <path d="M6 9l6 6 6-6" />
               </svg>
             </div>
-            <div class="result-display" id="result-display">—</div>
           </div>
+          <div class="result-row">
+            <span class="result-num empty" id="result-num">—</span>
+            <div class="spinner hidden" id="spinner"></div>
+          </div>
+          <div class="slot-name" id="to-name">Euro · European Union</div>
+
           <!-- To dropdown -->
-          <div class="dropdown" id="to-dropdown">
-            <div class="dd-search-row">
+          <div class="dd" id="to-dd">
+            <div class="dd-search-wrap">
               <svg
-                width="13"
-                height="13"
+                width="14"
+                height="14"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2.5"
+                stroke-width="2"
               >
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -188,7 +776,7 @@
                 type="text"
                 id="to-search"
                 class="dd-search"
-                placeholder="Search…"
+                placeholder="Search currency…"
                 autocomplete="off"
               />
             </div>
@@ -197,48 +785,346 @@
         </div>
 
         <!-- Rate strip -->
-        <div class="rate-strip" id="rate-strip">
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-          >
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-          </svg>
-          <span id="rate-text">Waiting for conversion…</span>
+        <div class="rate-strip">
+          <span class="rate-val" id="rate-val">—</span>
+          <span class="rate-date" id="rate-date">—</span>
         </div>
       </div>
       <!-- /card -->
 
-      <!-- Convert CTA -->
-      <button class="cta-btn" id="convert-btn">
-        <span class="cta-text">Get Rate</span>
-        <div class="cta-loader" id="cta-loader">
-          <span></span><span></span><span></span>
-        </div>
-        <svg
-          class="cta-icon"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
+      <!-- Socials -->
+      <div class="socials">
+        <a
+          href="https://facebook.com/shawnazd"
+          target="_blank"
+          rel="noopener"
+          class="soc soc-fb"
         >
-          <line x1="5" y1="12" x2="19" y2="12" />
-          <polyline points="12 5 19 12 12 19" />
-        </svg>
-      </button>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+            />
+          </svg>
+          shawnazd
+        </a>
+        <div class="soc-sep"></div>
+        <a
+          href="https://github.com/shawnazd"
+          target="_blank"
+          rel="noopener"
+          class="soc soc-gh"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+            />
+          </svg>
+          shawnazd
+        </a>
+      </div>
 
-      <p class="footer-note">
-        Rates sourced from open.er-api.com · Updated every 24h
-      </p>
+      <p class="footer">open.er-api.com · rates updated every 24h</p>
     </div>
-    <!-- /page -->
 
-    <script src="app.js"></script>
+    <script>
+      const CURRENCIES = {
+        AED: { n: "UAE Dirham", f: "ae" },
+        AFN: { n: "Afghan Afghani", f: "af" },
+        ALL: { n: "Albanian Lek", f: "al" },
+        AMD: { n: "Armenian Dram", f: "am" },
+        ANG: { n: "Neth. Antillean Guilder", f: "an" },
+        AOA: { n: "Angolan Kwanza", f: "ao" },
+        ARS: { n: "Argentine Peso", f: "ar" },
+        AUD: { n: "Australian Dollar", f: "au" },
+        AWG: { n: "Aruban Florin", f: "aw" },
+        AZN: { n: "Azerbaijani Manat", f: "az" },
+        BAM: { n: "Bosnian Mark", f: "ba" },
+        BBD: { n: "Barbadian Dollar", f: "bb" },
+        BDT: { n: "Bangladeshi Taka", f: "bd" },
+        BGN: { n: "Bulgarian Lev", f: "bg" },
+        BHD: { n: "Bahraini Dinar", f: "bh" },
+        BIF: { n: "Burundian Franc", f: "bi" },
+        BMD: { n: "Bermudian Dollar", f: "bm" },
+        BND: { n: "Brunei Dollar", f: "bn" },
+        BOB: { n: "Bolivian Boliviano", f: "bo" },
+        BRL: { n: "Brazilian Real", f: "br" },
+        BSD: { n: "Bahamian Dollar", f: "bs" },
+        BTN: { n: "Bhutanese Ngultrum", f: "bt" },
+        BWP: { n: "Botswana Pula", f: "bw" },
+        BYN: { n: "Belarusian Ruble", f: "by" },
+        BZD: { n: "Belize Dollar", f: "bz" },
+        CAD: { n: "Canadian Dollar", f: "ca" },
+        CDF: { n: "Congolese Franc", f: "cd" },
+        CHF: { n: "Swiss Franc", f: "ch" },
+        CLP: { n: "Chilean Peso", f: "cl" },
+        CNY: { n: "Chinese Yuan", f: "cn" },
+        COP: { n: "Colombian Peso", f: "co" },
+        CRC: { n: "Costa Rican Colón", f: "cr" },
+        CUP: { n: "Cuban Peso", f: "cu" },
+        CVE: { n: "Cape Verdean Escudo", f: "cv" },
+        CZK: { n: "Czech Koruna", f: "cz" },
+        DJF: { n: "Djiboutian Franc", f: "dj" },
+        DKK: { n: "Danish Krone", f: "dk" },
+        DOP: { n: "Dominican Peso", f: "do" },
+        DZD: { n: "Algerian Dinar", f: "dz" },
+        EGP: { n: "Egyptian Pound", f: "eg" },
+        ETB: { n: "Ethiopian Birr", f: "et" },
+        EUR: { n: "Euro", f: "eu" },
+        FJD: { n: "Fijian Dollar", f: "fj" },
+        GBP: { n: "British Pound", f: "gb" },
+        GEL: { n: "Georgian Lari", f: "ge" },
+        GHS: { n: "Ghanaian Cedi", f: "gh" },
+        GTQ: { n: "Guatemalan Quetzal", f: "gt" },
+        GYD: { n: "Guyanese Dollar", f: "gy" },
+        HKD: { n: "Hong Kong Dollar", f: "hk" },
+        HNL: { n: "Honduran Lempira", f: "hn" },
+        HTG: { n: "Haitian Gourde", f: "ht" },
+        HUF: { n: "Hungarian Forint", f: "hu" },
+        IDR: { n: "Indonesian Rupiah", f: "id" },
+        ILS: { n: "Israeli Shekel", f: "il" },
+        INR: { n: "Indian Rupee", f: "in" },
+        IQD: { n: "Iraqi Dinar", f: "iq" },
+        ISK: { n: "Icelandic Króna", f: "is" },
+        JMD: { n: "Jamaican Dollar", f: "jm" },
+        JOD: { n: "Jordanian Dinar", f: "jo" },
+        JPY: { n: "Japanese Yen", f: "jp" },
+        KES: { n: "Kenyan Shilling", f: "ke" },
+        KGS: { n: "Kyrgyzstani Som", f: "kg" },
+        KHR: { n: "Cambodian Riel", f: "kh" },
+        KRW: { n: "South Korean Won", f: "kr" },
+        KWD: { n: "Kuwaiti Dinar", f: "kw" },
+        KZT: { n: "Kazakhstani Tenge", f: "kz" },
+        LAK: { n: "Lao Kip", f: "la" },
+        LBP: { n: "Lebanese Pound", f: "lb" },
+        LKR: { n: "Sri Lankan Rupee", f: "lk" },
+        LYD: { n: "Libyan Dinar", f: "ly" },
+        MAD: { n: "Moroccan Dirham", f: "ma" },
+        MDL: { n: "Moldovan Leu", f: "md" },
+        MGA: { n: "Malagasy Ariary", f: "mg" },
+        MKD: { n: "Macedonian Denar", f: "mk" },
+        MMK: { n: "Myanmar Kyat", f: "mm" },
+        MNT: { n: "Mongolian Tögrög", f: "mn" },
+        MXN: { n: "Mexican Peso", f: "mx" },
+        MYR: { n: "Malaysian Ringgit", f: "my" },
+        NGN: { n: "Nigerian Naira", f: "ng" },
+        NOK: { n: "Norwegian Krone", f: "no" },
+        NPR: { n: "Nepalese Rupee", f: "np" },
+        NZD: { n: "New Zealand Dollar", f: "nz" },
+        OMR: { n: "Omani Rial", f: "om" },
+        PAB: { n: "Panamanian Balboa", f: "pa" },
+        PEN: { n: "Peruvian Sol", f: "pe" },
+        PHP: { n: "Philippine Peso", f: "ph" },
+        PKR: { n: "Pakistani Rupee", f: "pk" },
+        PLN: { n: "Polish Złoty", f: "pl" },
+        PYG: { n: "Paraguayan Guaraní", f: "py" },
+        QAR: { n: "Qatari Riyal", f: "qa" },
+        RON: { n: "Romanian Leu", f: "ro" },
+        RSD: { n: "Serbian Dinar", f: "rs" },
+        RUB: { n: "Russian Ruble", f: "ru" },
+        RWF: { n: "Rwandan Franc", f: "rw" },
+        SAR: { n: "Saudi Riyal", f: "sa" },
+        SEK: { n: "Swedish Krona", f: "se" },
+        SGD: { n: "Singapore Dollar", f: "sg" },
+        SOS: { n: "Somali Shilling", f: "so" },
+        SRD: { n: "Surinamese Dollar", f: "sr" },
+        SYP: { n: "Syrian Pound", f: "sy" },
+        THB: { n: "Thai Baht", f: "th" },
+        TND: { n: "Tunisian Dinar", f: "tn" },
+        TRY: { n: "Turkish Lira", f: "tr" },
+        TTD: { n: "Trinidad & Tobago Dollar", f: "tt" },
+        TWD: { n: "New Taiwan Dollar", f: "tw" },
+        TZS: { n: "Tanzanian Shilling", f: "tz" },
+        UAH: { n: "Ukrainian Hryvnia", f: "ua" },
+        UGX: { n: "Ugandan Shilling", f: "ug" },
+        USD: { n: "United States Dollar", f: "us" },
+        UYU: { n: "Uruguayan Peso", f: "uy" },
+        UZS: { n: "Uzbekistani Som", f: "uz" },
+        VND: { n: "Vietnamese Dong", f: "vn" },
+        YER: { n: "Yemeni Rial", f: "ye" },
+        ZAR: { n: "South African Rand", f: "za" },
+        ZMW: { n: "Zambian Kwacha", f: "zm" },
+      };
+
+      const ZERO = new Set([
+        "JPY",
+        "KRW",
+        "IDR",
+        "VND",
+        "CLP",
+        "PYG",
+        "UGX",
+        "RWF",
+        "BIF",
+        "GNF",
+      ]);
+      const FLAG = (c) =>
+        `https://flagcdn.com/w40/${CURRENCIES[c]?.f ?? "un"}.png`;
+      const $ = (id) => document.getElementById(id);
+
+      function fmt(n, c) {
+        return n.toLocaleString("en-US", {
+          minimumFractionDigits: ZERO.has(c) ? 0 : 2,
+          maximumFractionDigits: ZERO.has(c) ? 0 : 2,
+        });
+      }
+
+      let from = "USD",
+        to = "EUR",
+        rates = {},
+        openType = null;
+
+      function syncUI() {
+        const fd = CURRENCIES[from],
+          td = CURRENCIES[to];
+        $("from-flag").src = FLAG(from);
+        $("from-code").textContent = from;
+        $("from-cur-tag").textContent = from;
+        $("from-name").textContent = fd.n;
+        $("to-flag").src = FLAG(to);
+        $("to-code").textContent = to;
+        $("to-name").textContent = td.n;
+      }
+
+      function convert() {
+        const a = parseFloat($("amount").value);
+        if (!a || isNaN(a) || a <= 0 || !rates[to]) {
+          $("result-num").textContent = "—";
+          $("result-num").classList.add("empty");
+          $("rate-val").innerHTML = "—";
+          return;
+        }
+        const rate = rates[to];
+        const result = a * rate;
+        const el = $("result-num");
+        el.textContent = fmt(result, to);
+        el.classList.remove("empty", "pop");
+        void el.offsetWidth;
+        el.classList.add("pop");
+        $("rate-val").innerHTML =
+          `1 ${from} = <span>${fmt(rate, to)} ${to}</span>`;
+      }
+
+      async function fetchRates() {
+        $("spinner").classList.remove("hidden");
+        $("result-num").classList.add("empty");
+        $("live-tag").textContent = "Syncing";
+
+        try {
+          const res = await fetch(`https://open.er-api.com/v6/latest/${from}`);
+          const data = await res.json();
+          if (data.result !== "success") throw new Error();
+          rates = data.rates;
+          const d = new Date(data.time_last_update_utc);
+          $("rate-date").textContent = d.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          });
+          $("hl-sub").textContent =
+            `Exchange rates updated ${d.toLocaleDateString("en-US", { month: "long", day: "numeric" })}`;
+          $("live-tag").textContent = "Live";
+          convert();
+        } catch {
+          $("live-tag").textContent = "Offline";
+          $("hl-sub").textContent = "Could not fetch rates";
+        } finally {
+          $("spinner").classList.add("hidden");
+          $("result-num").classList.remove("empty");
+        }
+      }
+
+      function buildList(ulEl, type, filter = "") {
+        ulEl.innerHTML = "";
+        const q = filter.toUpperCase();
+        const sel = type === "from" ? from : to;
+        Object.keys(CURRENCIES)
+          .filter(
+            (c) => c.includes(q) || CURRENCIES[c].n.toUpperCase().includes(q),
+          )
+          .forEach((code) => {
+            const li = document.createElement("li");
+            li.className = "dd-item" + (code === sel ? " active" : "");
+            li.innerHTML = `
+                <img src="${FLAG(code)}" alt="${code}" width="22" height="14" loading="lazy">
+                <span class="di-code">${code}</span>
+                <span class="di-name">${CURRENCIES[code].n}</span>
+            `;
+            li.addEventListener("mousedown", (e) => {
+              e.preventDefault();
+              if (type === "from") {
+                from = code;
+                fetchRates();
+              } else {
+                to = code;
+                convert();
+              }
+              syncUI();
+              closeDD();
+            });
+            ulEl.appendChild(li);
+          });
+      }
+
+      function openDD(type) {
+        closeDD();
+        openType = type;
+        $(`${type}-btn`).classList.add("open");
+        $(`${type}-btn`).setAttribute("aria-expanded", "true");
+        $(`${type}-dd`).classList.add("open");
+        buildList($(`${type}-list`), type);
+        $(`${type}-search`).value = "";
+        requestAnimationFrame(() => $(`${type}-search`).focus());
+      }
+
+      function closeDD() {
+        if (!openType) return;
+        $(`${openType}-btn`).classList.remove("open");
+        $(`${openType}-btn`).setAttribute("aria-expanded", "false");
+        $(`${openType}-dd`).classList.remove("open");
+        openType = null;
+      }
+
+      $("from-btn").addEventListener("click", () =>
+        openType === "from" ? closeDD() : openDD("from"),
+      );
+      $("to-btn").addEventListener("click", () =>
+        openType === "to" ? closeDD() : openDD("to"),
+      );
+
+      [$("from-btn"), $("to-btn")].forEach((el, i) => {
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openDD(i === 0 ? "from" : "to");
+          }
+        });
+      });
+
+      $("from-search").addEventListener("input", (e) =>
+        buildList($("from-list"), "from", e.target.value),
+      );
+      $("to-search").addEventListener("input", (e) =>
+        buildList($("to-list"), "to", e.target.value),
+      );
+
+      document.addEventListener("mousedown", (e) => {
+        if (!e.target.closest(".slot")) closeDD();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeDD();
+      });
+
+      $("swap-btn").addEventListener("click", () => {
+        [from, to] = [to, from];
+        syncUI();
+        fetchRates();
+      });
+
+      $("amount").addEventListener("input", convert);
+      $("amount").addEventListener("focus", () => $("amount").select());
+
+      syncUI();
+      fetchRates();
+    </script>
   </body>
 </html>
