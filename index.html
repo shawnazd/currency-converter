@@ -10,629 +10,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      html {
-        -webkit-tap-highlight-color: transparent;
-      }
-
-      body {
-        font-family: "Poppins", sans-serif;
-        background: linear-gradient(
-          135deg,
-          #e8f0fe 0%,
-          #f0f4ff 50%,
-          #e3eeff 100%
-        );
-        min-height: 100dvh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem 1rem 3rem;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      .page {
-        width: 100%;
-        max-width: 460px;
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-        animation: rise 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
-      }
-      @keyframes rise {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* ── NAV ── */
-      .nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 0.25rem;
-      }
-      .logo {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-      }
-      .logo-box {
-        width: 40px;
-        height: 40px;
-        background: #2563eb;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
-      }
-      .logo-box svg {
-        color: #fff;
-      }
-      .logo-text {
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: #1e293b;
-        letter-spacing: -0.02em;
-      }
-      .badge {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        background: #fff;
-        border: 2px solid #bbf7d0;
-        border-radius: 100px;
-        padding: 0.3rem 0.85rem;
-        font-size: 0.68rem;
-        font-weight: 700;
-        color: #16a34a;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-      }
-      .badge-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: #22c55e;
-        box-shadow: 0 0 6px #22c55e;
-        animation: blink 2s ease-in-out infinite;
-      }
-      @keyframes blink {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.3;
-        }
-      }
-
-      /* ── CARD ── */
-      .card {
-        background: #fff;
-        border-radius: 28px;
-        border: 2px solid #dbeafe;
-        box-shadow:
-          0 1px 0 #fff inset,
-          0 2px 4px rgba(37, 99, 235, 0.04),
-          0 12px 40px rgba(37, 99, 235, 0.1),
-          0 32px 80px rgba(0, 0, 0, 0.08);
-      }
-
-      /* ── PANEL ── */
-      .panel {
-        padding: 1.75rem 1.75rem 1.6rem;
-        position: relative;
-      }
-      .panel-from {
-        border-bottom: 2px solid #f1f5fe;
-      }
-
-      .panel-tag {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        font-size: 0.65rem;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: #94a3b8;
-        margin-bottom: 1.1rem;
-      }
-      .panel-tag svg {
-        flex-shrink: 0;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2.5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-
-      /* ── TOP ROW (selector + amount) ── */
-      .top-row {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 0.75rem;
-      }
-
-      /* ── SELECTOR ── */
-      .selector {
-        display: flex;
-        align-items: center;
-        gap: 0.55rem;
-        background: #f8faff;
-        border: 2px solid #dbeafe;
-        border-radius: 14px;
-        padding: 0.6rem 0.85rem;
-        cursor: pointer;
-        user-select: none;
-        transition: all 0.18s ease;
-        flex-shrink: 0;
-      }
-      .selector:hover {
-        border-color: #93c5fd;
-        background: #eff6ff;
-      }
-      .selector.open {
-        border-color: #2563eb;
-        background: #eff6ff;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-      }
-      .selector:active {
-        transform: scale(0.97);
-      }
-      .selector.open .sel-arrow {
-        transform: rotate(180deg);
-        color: #2563eb;
-      }
-
-      .sel-flag {
-        width: 30px;
-        height: 20px;
-        border-radius: 5px;
-        object-fit: cover;
-        flex-shrink: 0;
-        background: #e2e8f0;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-      }
-      .sel-info {
-        display: flex;
-        flex-direction: column;
-        gap: 0.05rem;
-        min-width: 0;
-      }
-      .sel-code {
-        font-size: 0.92rem;
-        font-weight: 700;
-        color: #1e293b;
-        letter-spacing: 0.02em;
-        line-height: 1;
-      }
-      .sel-name {
-        font-size: 0.6rem;
-        font-weight: 500;
-        color: #94a3b8;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 72px;
-        line-height: 1;
-      }
-      .sel-arrow {
-        width: 15px;
-        height: 15px;
-        color: #94a3b8;
-        flex-shrink: 0;
-        transition:
-          transform 0.18s ease,
-          color 0.18s ease;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2.5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-
-      /* ── AMOUNT ── */
-      .amount {
-        flex: 1;
-        min-width: 0;
-        font-family: "Poppins", sans-serif;
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #1e293b;
-        border: none;
-        background: none;
-        outline: none;
-        caret-color: #2563eb;
-        text-align: right;
-        letter-spacing: -0.03em;
-        -moz-appearance: textfield;
-        appearance: textfield;
-      }
-      .amount::-webkit-outer-spin-button,
-      .amount::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-      }
-      .amount::placeholder {
-        color: #cbd5e1;
-      }
-
-      /* ── RESULT ── */
-      .result {
-        flex: 1;
-        min-width: 0;
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #2563eb;
-        text-align: right;
-        letter-spacing: -0.03em;
-        line-height: 1;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .result.empty {
-        color: #cbd5e1;
-      }
-      .result.flash {
-        animation: flash 0.3s ease;
-      }
-      @keyframes flash {
-        from {
-          opacity: 0.1;
-          transform: translateY(6px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .res-wrap {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-
-      /* ── SPINNER ── */
-      .spinner {
-        width: 22px;
-        height: 22px;
-        border: 2.5px solid #dbeafe;
-        border-top-color: #2563eb;
-        border-radius: 50%;
-        animation: spin 0.65s linear infinite;
-        flex-shrink: 0;
-      }
-      .spinner.hide {
-        display: none;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      /* ── SWAP ── */
-      .swap-zone {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 0;
-        position: relative;
-        z-index: 10;
-      }
-      .swap-btn {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background: #fff;
-        border: 2px solid #dbeafe;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow:
-          0 4px 16px rgba(37, 99, 235, 0.12),
-          0 1px 3px rgba(0, 0, 0, 0.08);
-        color: #2563eb;
-        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-        flex-shrink: 0;
-      }
-      .swap-btn:hover {
-        background: #2563eb;
-        border-color: #2563eb;
-        color: #fff;
-        transform: rotate(180deg);
-        box-shadow: 0 6px 24px rgba(37, 99, 235, 0.4);
-      }
-      .swap-btn:active {
-        transform: rotate(180deg) scale(0.9);
-      }
-      .swap-btn svg {
-        pointer-events: none;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2.5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-
-      /* ── RATE BAR ── */
-      .rate-bar {
-        background: #f8faff;
-        border-top: 2px solid #f1f5fe;
-        border-radius: 0 0 26px 26px;
-        padding: 1rem 1.75rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.75rem;
-      }
-      .rate-left {
-        display: flex;
-        flex-direction: column;
-        gap: 0.18rem;
-      }
-      .rate-label {
-        font-size: 0.6rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #94a3b8;
-      }
-      .rate-val {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #1e293b;
-      }
-      .rate-val span {
-        color: #2563eb;
-      }
-      .rate-date {
-        font-size: 0.65rem;
-        font-weight: 500;
-        color: #94a3b8;
-        white-space: nowrap;
-        flex-shrink: 0;
-      }
-
-      /* ── DROPDOWN ── */
-      .dd {
-        position: absolute;
-        top: calc(100% + 10px);
-        left: 0;
-        right: 0;
-        background: #fff;
-        border: 2px solid #dbeafe;
-        border-radius: 18px;
-        box-shadow:
-          0 8px 20px rgba(37, 99, 235, 0.1),
-          0 24px 72px rgba(0, 0, 0, 0.14);
-        z-index: 999;
-        max-height: 300px;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        opacity: 0;
-        transform: translateY(-8px) scale(0.97);
-        pointer-events: none;
-        transition:
-          opacity 0.17s ease,
-          transform 0.17s ease;
-      }
-      .dd.open {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        pointer-events: all;
-      }
-      .dd-top {
-        display: flex;
-        align-items: center;
-        gap: 0.55rem;
-        padding: 0.8rem 1.1rem;
-        border-bottom: 2px solid #f1f5fe;
-        flex-shrink: 0;
-        background: #f8faff;
-        border-radius: 16px 16px 0 0;
-      }
-      .dd-top svg {
-        color: #94a3b8;
-        flex-shrink: 0;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-      .dd-input {
-        flex: 1;
-        border: none;
-        background: none;
-        outline: none;
-        font-family: "Poppins", sans-serif;
-        font-size: 0.9rem;
-        font-weight: 500;
-        color: #1e293b;
-      }
-      .dd-input::placeholder {
-        color: #94a3b8;
-        font-weight: 400;
-      }
-
-      .dd-list {
-        list-style: none;
-        overflow-y: auto;
-        flex: 1;
-        scrollbar-width: thin;
-        scrollbar-color: #dbeafe transparent;
-      }
-      .dd-list::-webkit-scrollbar {
-        width: 3px;
-      }
-      .dd-list::-webkit-scrollbar-thumb {
-        background: #dbeafe;
-        border-radius: 2px;
-      }
-
-      .dd-item {
-        display: flex;
-        align-items: center;
-        gap: 0.7rem;
-        padding: 0.65rem 1.1rem;
-        cursor: pointer;
-        transition: background 0.12s;
-      }
-      .dd-item:hover,
-      .dd-item.on {
-        background: #eff6ff;
-      }
-      .dd-item.on .di-code {
-        color: #2563eb;
-      }
-      .dd-item img {
-        width: 26px;
-        height: 17px;
-        border-radius: 4px;
-        object-fit: cover;
-        flex-shrink: 0;
-        background: #e2e8f0;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-      }
-      .di-code {
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: #1e293b;
-        min-width: 40px;
-        letter-spacing: 0.03em;
-      }
-      .di-name {
-        font-size: 0.78rem;
-        font-weight: 400;
-        color: #64748b;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      /* ── SOCIALS ── */
-      .socials {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.65rem;
-      }
-      .soc {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        text-decoration: none;
-        font-size: 0.76rem;
-        font-weight: 600;
-        border-radius: 100px;
-        padding: 0.45rem 1rem 0.45rem 0.75rem;
-        background: #fff;
-        border: 2px solid #dbeafe;
-        color: #64748b;
-        transition: all 0.17s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-      }
-      .soc:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-      }
-      .soc-fb:hover {
-        color: #1877f2;
-        border-color: #93c5fd;
-        background: #eff6ff;
-      }
-      .soc-gh:hover {
-        color: #0f172a;
-        border-color: #cbd5e1;
-        background: #f8fafc;
-      }
-      .soc svg {
-        flex-shrink: 0;
-      }
-      .soc-div {
-        width: 1px;
-        height: 20px;
-        background: #dbeafe;
-      }
-
-      .foot {
-        text-align: center;
-        font-size: 0.63rem;
-        font-weight: 500;
-        color: #94a3b8;
-        letter-spacing: 0.03em;
-      }
-
-      :focus-visible {
-        outline: 2.5px solid #2563eb;
-        outline-offset: 3px;
-        border-radius: 6px;
-      }
-
-      @media (max-width: 400px) {
-        body {
-          padding: 1.2rem 0.85rem 2.5rem;
-        }
-        .panel {
-          padding: 1.4rem 1.3rem 1.25rem;
-        }
-        .amount,
-        .result {
-          font-size: 2rem;
-        }
-        .logo-text {
-          font-size: 0.9rem;
-        }
-        .swap-btn {
-          width: 42px;
-          height: 42px;
-        }
-        .rate-bar {
-          padding: 0.9rem 1.3rem;
-        }
-      }
-      @media (min-width: 500px) {
-        .panel {
-          padding: 2rem 2rem 1.85rem;
-        }
-        .rate-bar {
-          padding: 1.15rem 2rem;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="page">
-      <!-- NAV -->
-      <nav class="nav">
-        <div class="logo">
-          <div class="logo-box">
+      <!-- ── HEADER ── -->
+      <header class="header">
+        <div class="brand">
+          <div class="brand-icon">
             <svg
-              width="20"
-              height="20"
+              width="22"
+              height="22"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -644,85 +35,140 @@
               <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
             </svg>
           </div>
-          <span class="logo-text">Currency Converter</span>
+          <div class="brand-title">
+            <span class="brand-name">Currency Converter</span>
+            <span class="brand-sub">Real-time exchange rates</span>
+          </div>
         </div>
-        <div class="badge">
-          <span class="badge-dot"></span>
-          <span id="live-lbl">Live</span>
+        <div class="live-badge">
+          <span class="live-dot"></span>
+          <span class="live-text" id="live-lbl">Live</span>
         </div>
-      </nav>
+      </header>
 
-      <!-- CARD -->
+      <!-- ── CARD ── -->
       <div class="card">
         <!-- FROM -->
         <div class="panel panel-from" id="panel-from">
-          <div class="panel-tag">
-            <svg width="11" height="11" viewBox="0 0 24 24">
-              <line x1="22" y1="2" x2="11" y2="13" />
-              <polygon points="22 2 15 22 11 13 2 9 22 2" />
-            </svg>
-            You Send
-          </div>
-          <div class="top-row">
+          <div class="panel-header">
+            <div class="panel-label lbl-from">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+              You Send
+            </div>
             <div
-              class="selector"
+              class="cur-pill"
               id="from-btn"
               tabindex="0"
               role="button"
               aria-expanded="false"
+              aria-label="Select from currency"
             >
               <img
-                class="sel-flag"
+                class="pill-flag"
                 id="from-flag"
                 src=""
-                alt=""
-                width="30"
-                height="20"
+                alt="USD"
+                width="32"
+                height="21"
               />
-              <div class="sel-info">
-                <span class="sel-code" id="from-code">USD</span>
-                <span class="sel-name" id="from-sname">United States</span>
+              <div class="pill-info">
+                <span class="pill-code" id="from-code">USD</span>
+                <span class="pill-country" id="from-country"
+                  >United States</span
+                >
               </div>
-              <svg class="sel-arrow" width="15" height="15" viewBox="0 0 24 24">
+              <svg
+                class="pill-caret"
+                id="from-caret"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </div>
-            <input
-              id="amount"
-              type="number"
-              class="amount"
-              value="1"
-              min="0"
-              step="any"
-              autocomplete="off"
-              inputmode="decimal"
-              placeholder="0"
-            />
           </div>
 
-          <!-- dropdown -->
-          <div class="dd" id="from-dd">
-            <div class="dd-top">
-              <svg width="15" height="15" viewBox="0 0 24 24">
+          <!-- Amount box -->
+          <div class="num-box">
+            <div class="num-box-inner">
+              <input
+                id="amount"
+                type="number"
+                class="num-input"
+                value="1"
+                min="0"
+                step="any"
+                autocomplete="off"
+                inputmode="decimal"
+                placeholder="0"
+                aria-label="Amount"
+              />
+              <span class="num-box-cur" id="from-cur-tag">USD</span>
+            </div>
+          </div>
+          <span class="panel-cur-name" id="from-full-name"
+            >US Dollar · United States</span
+          >
+
+          <!-- Dropdown -->
+          <div class="dd" id="from-dd" role="listbox">
+            <div class="dd-search-row">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <input
                 type="text"
                 id="from-search"
-                class="dd-input"
+                class="dd-search"
                 placeholder="Search currency or country…"
                 autocomplete="off"
               />
             </div>
-            <ul class="dd-list" id="from-list"></ul>
+            <ul class="dd-ul" id="from-ul"></ul>
           </div>
         </div>
 
         <!-- SWAP -->
-        <div class="swap-zone">
+        <div class="swap-row">
           <button class="swap-btn" id="swap-btn" aria-label="Swap currencies">
-            <svg width="18" height="18" viewBox="0 0 24 24">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <polyline points="17 1 21 5 17 9" />
               <path d="M3 11V9a4 4 0 0 1 4-4h14" />
               <polyline points="7 23 3 19 7 15" />
@@ -732,73 +178,130 @@
         </div>
 
         <!-- TO -->
-        <div class="panel" id="panel-to">
-          <div class="panel-tag">
-            <svg width="11" height="11" viewBox="0 0 24 24">
-              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-              <polyline points="17 6 23 6 23 12" />
-            </svg>
-            You Receive
-          </div>
-          <div class="top-row">
+        <div class="panel panel-to" id="panel-to">
+          <div class="panel-header">
+            <div class="panel-label lbl-to">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                <polyline points="17 6 23 6 23 12" />
+              </svg>
+              You Receive
+            </div>
             <div
-              class="selector"
+              class="cur-pill cur-pill-to"
               id="to-btn"
               tabindex="0"
               role="button"
               aria-expanded="false"
+              aria-label="Select to currency"
             >
               <img
-                class="sel-flag"
+                class="pill-flag"
                 id="to-flag"
                 src=""
-                alt=""
-                width="30"
-                height="20"
+                alt="EUR"
+                width="32"
+                height="21"
               />
-              <div class="sel-info">
-                <span class="sel-code" id="to-code">EUR</span>
-                <span class="sel-name" id="to-sname">European Union</span>
+              <div class="pill-info">
+                <span class="pill-code" id="to-code">EUR</span>
+                <span class="pill-country" id="to-country">European Union</span>
               </div>
-              <svg class="sel-arrow" width="15" height="15" viewBox="0 0 24 24">
+              <svg
+                class="pill-caret"
+                id="to-caret"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </div>
-            <div class="res-wrap">
-              <span class="result empty" id="result">—</span>
-              <div class="spinner hide" id="spinner"></div>
-            </div>
           </div>
 
-          <!-- dropdown -->
-          <div class="dd" id="to-dd">
-            <div class="dd-top">
-              <svg width="15" height="15" viewBox="0 0 24 24">
+          <!-- Result box -->
+          <div class="num-box num-box-result" id="result-box">
+            <div class="num-box-inner">
+              <input
+                id="result"
+                type="number"
+                class="num-input result-input"
+                placeholder="0"
+                autocomplete="off"
+                inputmode="decimal"
+                readonly
+                aria-label="Converted amount"
+              />
+              <div class="box-right">
+                <span class="num-box-cur result-cur-tag" id="to-cur-tag"
+                  >EUR</span
+                >
+                <div class="spinner hidden" id="spinner"></div>
+              </div>
+            </div>
+          </div>
+          <span class="panel-cur-name" id="to-full-name"
+            >Euro · European Union</span
+          >
+
+          <!-- Dropdown -->
+          <div class="dd" id="to-dd" role="listbox">
+            <div class="dd-search-row">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <input
                 type="text"
                 id="to-search"
-                class="dd-input"
+                class="dd-search"
                 placeholder="Search currency or country…"
                 autocomplete="off"
               />
             </div>
-            <ul class="dd-list" id="to-list"></ul>
+            <ul class="dd-ul" id="to-ul"></ul>
           </div>
         </div>
 
         <!-- RATE BAR -->
         <div class="rate-bar">
-          <div class="rate-left">
-            <span class="rate-label">Exchange Rate</span>
-            <span class="rate-val" id="rate-val">—</span>
+          <div class="rate-info">
+            <span class="rate-lbl">Exchange Rate</span>
+            <span class="rate-val" id="rate-val">Fetching rates…</span>
           </div>
           <span class="rate-date" id="rate-date">—</span>
         </div>
       </div>
       <!-- /card -->
+
+      <!-- QUICK PAIRS -->
+      <div class="quick-section">
+        <span class="quick-title">⚡ Popular Pairs</span>
+        <div class="quick-grid" id="quick-grid"></div>
+      </div>
 
       <!-- SOCIALS -->
       <div class="socials">
@@ -815,7 +318,7 @@
           </svg>
           shawnazd
         </a>
-        <div class="soc-div"></div>
+        <div class="soc-sep"></div>
         <a
           href="https://github.com/shawnazd"
           target="_blank"
@@ -831,286 +334,8 @@
         </a>
       </div>
 
-      <p class="foot">Real-time rates · open.er-api.com · Updated every 24h</p>
+      <p class="foot">Powered by open.er-api.com · Rates updated every 24h</p>
     </div>
-    <script>
-      const C = {
-        AED: { n: "UAE Dirham", s: "United Arab Emirates", f: "ae" },
-        AFN: { n: "Afghan Afghani", s: "Afghanistan", f: "af" },
-        ALL: { n: "Albanian Lek", s: "Albania", f: "al" },
-        AMD: { n: "Armenian Dram", s: "Armenia", f: "am" },
-        ANG: { n: "Antillean Guilder", s: "Netherlands Antilles", f: "an" },
-        AOA: { n: "Angolan Kwanza", s: "Angola", f: "ao" },
-        ARS: { n: "Argentine Peso", s: "Argentina", f: "ar" },
-        AUD: { n: "Australian Dollar", s: "Australia", f: "au" },
-        AWG: { n: "Aruban Florin", s: "Aruba", f: "aw" },
-        AZN: { n: "Azerbaijani Manat", s: "Azerbaijan", f: "az" },
-        BAM: { n: "Bosnian Mark", s: "Bosnia", f: "ba" },
-        BBD: { n: "Barbadian Dollar", s: "Barbados", f: "bb" },
-        BDT: { n: "Bangladeshi Taka", s: "Bangladesh", f: "bd" },
-        BGN: { n: "Bulgarian Lev", s: "Bulgaria", f: "bg" },
-        BHD: { n: "Bahraini Dinar", s: "Bahrain", f: "bh" },
-        BIF: { n: "Burundian Franc", s: "Burundi", f: "bi" },
-        BMD: { n: "Bermudian Dollar", s: "Bermuda", f: "bm" },
-        BND: { n: "Brunei Dollar", s: "Brunei", f: "bn" },
-        BOB: { n: "Bolivian Boliviano", s: "Bolivia", f: "bo" },
-        BRL: { n: "Brazilian Real", s: "Brazil", f: "br" },
-        BSD: { n: "Bahamian Dollar", s: "Bahamas", f: "bs" },
-        BTN: { n: "Bhutanese Ngultrum", s: "Bhutan", f: "bt" },
-        BWP: { n: "Botswana Pula", s: "Botswana", f: "bw" },
-        BYN: { n: "Belarusian Ruble", s: "Belarus", f: "by" },
-        BZD: { n: "Belize Dollar", s: "Belize", f: "bz" },
-        CAD: { n: "Canadian Dollar", s: "Canada", f: "ca" },
-        CDF: { n: "Congolese Franc", s: "Congo", f: "cd" },
-        CHF: { n: "Swiss Franc", s: "Switzerland", f: "ch" },
-        CLP: { n: "Chilean Peso", s: "Chile", f: "cl" },
-        CNY: { n: "Chinese Yuan", s: "China", f: "cn" },
-        COP: { n: "Colombian Peso", s: "Colombia", f: "co" },
-        CRC: { n: "Costa Rican Colón", s: "Costa Rica", f: "cr" },
-        CUP: { n: "Cuban Peso", s: "Cuba", f: "cu" },
-        CVE: { n: "Cape Verdean Escudo", s: "Cape Verde", f: "cv" },
-        CZK: { n: "Czech Koruna", s: "Czech Republic", f: "cz" },
-        DJF: { n: "Djiboutian Franc", s: "Djibouti", f: "dj" },
-        DKK: { n: "Danish Krone", s: "Denmark", f: "dk" },
-        DOP: { n: "Dominican Peso", s: "Dominican Republic", f: "do" },
-        DZD: { n: "Algerian Dinar", s: "Algeria", f: "dz" },
-        EGP: { n: "Egyptian Pound", s: "Egypt", f: "eg" },
-        ETB: { n: "Ethiopian Birr", s: "Ethiopia", f: "et" },
-        EUR: { n: "Euro", s: "European Union", f: "eu" },
-        FJD: { n: "Fijian Dollar", s: "Fiji", f: "fj" },
-        GBP: { n: "British Pound", s: "United Kingdom", f: "gb" },
-        GEL: { n: "Georgian Lari", s: "Georgia", f: "ge" },
-        GHS: { n: "Ghanaian Cedi", s: "Ghana", f: "gh" },
-        GTQ: { n: "Guatemalan Quetzal", s: "Guatemala", f: "gt" },
-        GYD: { n: "Guyanese Dollar", s: "Guyana", f: "gy" },
-        HKD: { n: "Hong Kong Dollar", s: "Hong Kong", f: "hk" },
-        HNL: { n: "Honduran Lempira", s: "Honduras", f: "hn" },
-        HTG: { n: "Haitian Gourde", s: "Haiti", f: "ht" },
-        HUF: { n: "Hungarian Forint", s: "Hungary", f: "hu" },
-        IDR: { n: "Indonesian Rupiah", s: "Indonesia", f: "id" },
-        ILS: { n: "Israeli Shekel", s: "Israel", f: "il" },
-        INR: { n: "Indian Rupee", s: "India", f: "in" },
-        IQD: { n: "Iraqi Dinar", s: "Iraq", f: "iq" },
-        ISK: { n: "Icelandic Króna", s: "Iceland", f: "is" },
-        JMD: { n: "Jamaican Dollar", s: "Jamaica", f: "jm" },
-        JOD: { n: "Jordanian Dinar", s: "Jordan", f: "jo" },
-        JPY: { n: "Japanese Yen", s: "Japan", f: "jp" },
-        KES: { n: "Kenyan Shilling", s: "Kenya", f: "ke" },
-        KGS: { n: "Kyrgyzstani Som", s: "Kyrgyzstan", f: "kg" },
-        KHR: { n: "Cambodian Riel", s: "Cambodia", f: "kh" },
-        KRW: { n: "South Korean Won", s: "South Korea", f: "kr" },
-        KWD: { n: "Kuwaiti Dinar", s: "Kuwait", f: "kw" },
-        KZT: { n: "Kazakhstani Tenge", s: "Kazakhstan", f: "kz" },
-        LAK: { n: "Lao Kip", s: "Laos", f: "la" },
-        LBP: { n: "Lebanese Pound", s: "Lebanon", f: "lb" },
-        LKR: { n: "Sri Lankan Rupee", s: "Sri Lanka", f: "lk" },
-        LYD: { n: "Libyan Dinar", s: "Libya", f: "ly" },
-        MAD: { n: "Moroccan Dirham", s: "Morocco", f: "ma" },
-        MDL: { n: "Moldovan Leu", s: "Moldova", f: "md" },
-        MGA: { n: "Malagasy Ariary", s: "Madagascar", f: "mg" },
-        MKD: { n: "Macedonian Denar", s: "North Macedonia", f: "mk" },
-        MMK: { n: "Myanmar Kyat", s: "Myanmar", f: "mm" },
-        MNT: { n: "Mongolian Tögrög", s: "Mongolia", f: "mn" },
-        MXN: { n: "Mexican Peso", s: "Mexico", f: "mx" },
-        MYR: { n: "Malaysian Ringgit", s: "Malaysia", f: "my" },
-        NGN: { n: "Nigerian Naira", s: "Nigeria", f: "ng" },
-        NOK: { n: "Norwegian Krone", s: "Norway", f: "no" },
-        NPR: { n: "Nepalese Rupee", s: "Nepal", f: "np" },
-        NZD: { n: "New Zealand Dollar", s: "New Zealand", f: "nz" },
-        OMR: { n: "Omani Rial", s: "Oman", f: "om" },
-        PAB: { n: "Panamanian Balboa", s: "Panama", f: "pa" },
-        PEN: { n: "Peruvian Sol", s: "Peru", f: "pe" },
-        PHP: { n: "Philippine Peso", s: "Philippines", f: "ph" },
-        PKR: { n: "Pakistani Rupee", s: "Pakistan", f: "pk" },
-        PLN: { n: "Polish Złoty", s: "Poland", f: "pl" },
-        PYG: { n: "Paraguayan Guaraní", s: "Paraguay", f: "py" },
-        QAR: { n: "Qatari Riyal", s: "Qatar", f: "qa" },
-        RON: { n: "Romanian Leu", s: "Romania", f: "ro" },
-        RSD: { n: "Serbian Dinar", s: "Serbia", f: "rs" },
-        RUB: { n: "Russian Ruble", s: "Russia", f: "ru" },
-        RWF: { n: "Rwandan Franc", s: "Rwanda", f: "rw" },
-        SAR: { n: "Saudi Riyal", s: "Saudi Arabia", f: "sa" },
-        SEK: { n: "Swedish Krona", s: "Sweden", f: "se" },
-        SGD: { n: "Singapore Dollar", s: "Singapore", f: "sg" },
-        SOS: { n: "Somali Shilling", s: "Somalia", f: "so" },
-        SRD: { n: "Surinamese Dollar", s: "Suriname", f: "sr" },
-        SYP: { n: "Syrian Pound", s: "Syria", f: "sy" },
-        THB: { n: "Thai Baht", s: "Thailand", f: "th" },
-        TND: { n: "Tunisian Dinar", s: "Tunisia", f: "tn" },
-        TRY: { n: "Turkish Lira", s: "Turkey", f: "tr" },
-        TTD: { n: "Trinidad & Tobago Dollar", s: "Trinidad & Tobago", f: "tt" },
-        TWD: { n: "New Taiwan Dollar", s: "Taiwan", f: "tw" },
-        TZS: { n: "Tanzanian Shilling", s: "Tanzania", f: "tz" },
-        UAH: { n: "Ukrainian Hryvnia", s: "Ukraine", f: "ua" },
-        UGX: { n: "Ugandan Shilling", s: "Uganda", f: "ug" },
-        USD: { n: "US Dollar", s: "United States", f: "us" },
-        UYU: { n: "Uruguayan Peso", s: "Uruguay", f: "uy" },
-        UZS: { n: "Uzbekistani Som", s: "Uzbekistan", f: "uz" },
-        VND: { n: "Vietnamese Dong", s: "Vietnam", f: "vn" },
-        YER: { n: "Yemeni Rial", s: "Yemen", f: "ye" },
-        ZAR: { n: "South African Rand", s: "South Africa", f: "za" },
-        ZMW: { n: "Zambian Kwacha", s: "Zambia", f: "zm" },
-      };
-      const ZERO = new Set([
-        "JPY",
-        "KRW",
-        "IDR",
-        "VND",
-        "CLP",
-        "PYG",
-        "UGX",
-        "RWF",
-        "BIF",
-        "GNF",
-      ]);
-      const FLAG = (c) => `https://flagcdn.com/w40/${C[c]?.f ?? "un"}.png`;
-      const $ = (id) => document.getElementById(id);
-      function fmt(n, c) {
-        return n.toLocaleString("en-US", {
-          minimumFractionDigits: ZERO.has(c) ? 0 : 2,
-          maximumFractionDigits: ZERO.has(c) ? 0 : 2,
-        });
-      }
-
-      let from = "USD",
-        to = "EUR",
-        rates = {},
-        openType = null;
-
-      function syncUI() {
-        ["from", "to"].forEach((t) => {
-          const cur = t === "from" ? from : to,
-            d = C[cur];
-          $(`${t}-flag`).src = FLAG(cur);
-          $(`${t}-code`).textContent = cur;
-          $(`${t}-sname`).textContent = d.s;
-        });
-      }
-
-      function convert() {
-        const a = parseFloat($("amount").value);
-        if (!a || isNaN(a) || a <= 0 || !rates[to]) {
-          $("result").textContent = "—";
-          $("result").className = "result empty";
-          $("rate-val").innerHTML = "—";
-          return;
-        }
-        const rate = rates[to],
-          res = a * rate,
-          el = $("result");
-        el.textContent = fmt(res, to);
-        el.className = "result flash";
-        $("rate-val").innerHTML =
-          `1 ${from} = <span>${fmt(rate, to)} ${to}</span>`;
-      }
-
-      async function fetchRates() {
-        $("spinner").classList.remove("hide");
-        $("live-lbl").textContent = "Syncing";
-        try {
-          const r = await fetch(`https://open.er-api.com/v6/latest/${from}`);
-          const d = await r.json();
-          if (d.result !== "success") throw 0;
-          rates = d.rates;
-          const dt = new Date(d.time_last_update_utc);
-          $("rate-date").textContent = dt.toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          });
-          $("live-lbl").textContent = "Live";
-          convert();
-        } catch {
-          $("live-lbl").textContent = "Offline";
-        } finally {
-          $("spinner").classList.add("hide");
-        }
-      }
-
-      function buildList(ul, type, q = "") {
-        ul.innerHTML = "";
-        const sel = type === "from" ? from : to;
-        q = q.toUpperCase();
-        Object.keys(C)
-          .filter(
-            (c) =>
-              c.includes(q) ||
-              C[c].n.toUpperCase().includes(q) ||
-              C[c].s.toUpperCase().includes(q),
-          )
-          .forEach((code) => {
-            const li = document.createElement("li");
-            li.className = "dd-item" + (code === sel ? " on" : "");
-            li.innerHTML = `<img src="${FLAG(code)}" alt="${code}" width="26" height="17" loading="lazy"><span class="di-code">${code}</span><span class="di-name">${C[code].s}</span>`;
-            li.addEventListener("mousedown", (e) => {
-              e.preventDefault();
-              if (type === "from") {
-                from = code;
-                fetchRates();
-              } else {
-                to = code;
-                convert();
-              }
-              syncUI();
-              closeDD();
-            });
-            ul.appendChild(li);
-          });
-      }
-
-      function openDD(type) {
-        closeDD();
-        openType = type;
-        $(`${type}-btn`).classList.add("open");
-        $(`${type}-btn`).setAttribute("aria-expanded", "true");
-        $(`${type}-dd`).classList.add("open");
-        buildList($(`${type}-list`), type);
-        $(`${type}-search`).value = "";
-        requestAnimationFrame(() => $(`${type}-search`).focus());
-      }
-      function closeDD() {
-        if (!openType) return;
-        $(`${openType}-btn`).classList.remove("open");
-        $(`${openType}-btn`).setAttribute("aria-expanded", "false");
-        $(`${openType}-dd`).classList.remove("open");
-        openType = null;
-      }
-
-      $("from-btn").addEventListener("click", () =>
-        openType === "from" ? closeDD() : openDD("from"),
-      );
-      $("to-btn").addEventListener("click", () =>
-        openType === "to" ? closeDD() : openDD("to"),
-      );
-      [$("from-btn"), $("to-btn")].forEach((el, i) =>
-        el.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openDD(i === 0 ? "from" : "to");
-          }
-        }),
-      );
-      $("from-search").addEventListener("input", (e) =>
-        buildList($("from-list"), "from", e.target.value),
-      );
-      $("to-search").addEventListener("input", (e) =>
-        buildList($("to-list"), "to", e.target.value),
-      );
-      document.addEventListener("mousedown", (e) => {
-        if (!e.target.closest(".panel")) closeDD();
-      });
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeDD();
-      });
-      $("swap-btn").addEventListener("click", () => {
-        [from, to] = [to, from];
-        syncUI();
-        fetchRates();
-      });
-      $("amount").addEventListener("input", convert);
-      $("amount").addEventListener("focus", () => $("amount").select());
-      syncUI();
-      fetchRates();
-    </script>
+    <script src="app.js"></script>
   </body>
 </html>
