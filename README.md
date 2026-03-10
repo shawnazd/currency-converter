@@ -8,8 +8,7 @@ A clean, modern currency converter with real-time exchange rates, country flags,
 
 ## 📸 Screenshot
 
-> _Add a screenshot of the app here._
-> `![Currency Converter Screenshot](currency_converter.png)`
+(currency_converter.png)`
 
 ---
 
