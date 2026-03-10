@@ -8,7 +8,7 @@ A clean, modern currency converter with real-time exchange rates, country flags,
 
 ## 📸 Screenshot
 
-(currency_converter.png)
+![Currency Converter](currency_converter.png)
 
 ---
 
