@@ -10,14 +10,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="page">
-      <!-- ── HEADER ── -->
+      <!-- HEADER -->
       <header class="header">
         <div class="brand">
           <div class="brand-icon">
@@ -40,21 +40,24 @@
             <span class="brand-sub">Real-time exchange rates</span>
           </div>
         </div>
-        <div class="live-badge">
+        <div
+          class="live-badge"
+          title="Exchange rates are live and updated every 24 hours"
+        >
           <span class="live-dot"></span>
           <span class="live-text" id="live-lbl">Live</span>
         </div>
       </header>
 
-      <!-- ── CARD ── -->
+      <!-- CARD -->
       <div class="card">
-        <!-- FROM -->
-        <div class="panel panel-from" id="panel-from">
-          <div class="panel-header">
-            <div class="panel-label lbl-from">
+        <!-- YOU SEND -->
+        <div class="panel" id="panel-from">
+          <div class="panel-top">
+            <span class="panel-label send-label">
               <svg
-                width="12"
-                height="12"
+                width="11"
+                height="11"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -66,74 +69,62 @@
                 <polygon points="22 2 15 22 11 13 2 9 22 2" />
               </svg>
               You Send
-            </div>
-            <div
-              class="cur-pill"
+            </span>
+            <button
+              class="cur-selector"
               id="from-btn"
-              tabindex="0"
-              role="button"
               aria-expanded="false"
-              aria-label="Select from currency"
+              aria-label="Select currency to send"
+              title="Click to choose the currency you want to send"
             >
               <img
-                class="pill-flag"
+                class="cur-flag"
                 id="from-flag"
                 src=""
                 alt="USD"
-                width="32"
-                height="21"
+                width="28"
+                height="19"
+                title="Currency flag"
               />
-              <div class="pill-info">
-                <span class="pill-code" id="from-code">USD</span>
-                <span class="pill-country" id="from-country"
-                  >United States</span
-                >
-              </div>
+              <span class="cur-code" id="from-code">USD</span>
+              <span class="cur-name" id="from-name">United States</span>
               <svg
-                class="pill-caret"
-                id="from-caret"
-                width="14"
-                height="14"
+                class="cur-arrow"
+                id="from-arrow"
+                width="13"
+                height="13"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2.5"
                 stroke-linecap="round"
                 stroke-linejoin="round"
+                title="Click to open currency list"
               >
                 <polyline points="6 9 12 15 18 9" />
               </svg>
-            </div>
+            </button>
           </div>
+          <input
+            id="amount"
+            type="number"
+            class="num-field"
+            value="1"
+            min="0"
+            step="any"
+            autocomplete="off"
+            inputmode="decimal"
+            placeholder="0"
+            title="Type the amount you want to convert"
+          />
+          <span class="field-currency" id="from-cur-label">US Dollar</span>
 
-          <!-- Amount box -->
-          <div class="num-box">
-            <div class="num-box-inner">
-              <input
-                id="amount"
-                type="number"
-                class="num-input"
-                value="1"
-                min="0"
-                step="any"
-                autocomplete="off"
-                inputmode="decimal"
-                placeholder="0"
-                aria-label="Amount"
-              />
-              <span class="num-box-cur" id="from-cur-tag">USD</span>
-            </div>
-          </div>
-          <span class="panel-cur-name" id="from-full-name"
-            >US Dollar · United States</span
-          >
-
-          <!-- Dropdown -->
-          <div class="dd" id="from-dd" role="listbox">
-            <div class="dd-search-row">
+          <!-- FROM dropdown -->
+          <div class="dropdown" id="from-dd">
+            <div class="dd-head">
               <svg
-                width="15"
-                height="15"
+                width="14"
+                height="14"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -148,20 +139,26 @@
                 type="text"
                 id="from-search"
                 class="dd-search"
-                placeholder="Search currency or country…"
+                placeholder="Search by name or country…"
                 autocomplete="off"
               />
             </div>
-            <ul class="dd-ul" id="from-ul"></ul>
+            <ul class="dd-list" id="from-list"></ul>
           </div>
         </div>
 
         <!-- SWAP -->
         <div class="swap-row">
-          <button class="swap-btn" id="swap-btn" aria-label="Swap currencies">
+          <div class="swap-divider"></div>
+          <button
+            class="swap-btn"
+            id="swap-btn"
+            aria-label="Swap currencies"
+            title="Swap — switch the two currencies"
+          >
             <svg
-              width="18"
-              height="18"
+              width="17"
+              height="17"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -175,15 +172,16 @@
               <path d="M21 13v2a4 4 0 0 1-4 4H3" />
             </svg>
           </button>
+          <div class="swap-divider"></div>
         </div>
 
-        <!-- TO -->
-        <div class="panel panel-to" id="panel-to">
-          <div class="panel-header">
-            <div class="panel-label lbl-to">
+        <!-- YOU RECEIVE -->
+        <div class="panel panel-receive" id="panel-to">
+          <div class="panel-top">
+            <span class="panel-label recv-label">
               <svg
-                width="12"
-                height="12"
+                width="11"
+                height="11"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -195,32 +193,29 @@
                 <polyline points="17 6 23 6 23 12" />
               </svg>
               You Receive
-            </div>
-            <div
-              class="cur-pill cur-pill-to"
+            </span>
+            <button
+              class="cur-selector cur-selector-recv"
               id="to-btn"
-              tabindex="0"
-              role="button"
               aria-expanded="false"
-              aria-label="Select to currency"
+              aria-label="Select currency to receive"
+              title="Click to choose the currency you want to receive"
             >
               <img
-                class="pill-flag"
+                class="cur-flag"
                 id="to-flag"
                 src=""
                 alt="EUR"
-                width="32"
-                height="21"
+                width="28"
+                height="19"
               />
-              <div class="pill-info">
-                <span class="pill-code" id="to-code">EUR</span>
-                <span class="pill-country" id="to-country">European Union</span>
-              </div>
+              <span class="cur-code" id="to-code">EUR</span>
+              <span class="cur-name" id="to-name">European Union</span>
               <svg
-                class="pill-caret"
-                id="to-caret"
-                width="14"
-                height="14"
+                class="cur-arrow"
+                id="to-arrow"
+                width="13"
+                height="13"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -230,40 +225,30 @@
               >
                 <polyline points="6 9 12 15 18 9" />
               </svg>
-            </div>
+            </button>
           </div>
-
-          <!-- Result box -->
-          <div class="num-box num-box-result" id="result-box">
-            <div class="num-box-inner">
-              <input
-                id="result"
-                type="number"
-                class="num-input result-input"
-                placeholder="0"
-                autocomplete="off"
-                inputmode="decimal"
-                readonly
-                aria-label="Converted amount"
-              />
-              <div class="box-right">
-                <span class="num-box-cur result-cur-tag" id="to-cur-tag"
-                  >EUR</span
-                >
-                <div class="spinner hidden" id="spinner"></div>
-              </div>
-            </div>
+          <div class="result-field-wrap">
+            <input
+              id="result"
+              type="number"
+              class="num-field result-field"
+              placeholder="0"
+              autocomplete="off"
+              inputmode="decimal"
+              title="Converted amount — you can also type here to convert backwards"
+            />
+            <div class="spinner hidden" id="spinner"></div>
           </div>
-          <span class="panel-cur-name" id="to-full-name"
-            >Euro · European Union</span
+          <span class="field-currency recv-currency" id="to-cur-label"
+            >Euro</span
           >
 
-          <!-- Dropdown -->
-          <div class="dd" id="to-dd" role="listbox">
-            <div class="dd-search-row">
+          <!-- TO dropdown -->
+          <div class="dropdown" id="to-dd">
+            <div class="dd-head">
               <svg
-                width="15"
-                height="15"
+                width="14"
+                height="14"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -278,30 +263,27 @@
                 type="text"
                 id="to-search"
                 class="dd-search"
-                placeholder="Search currency or country…"
+                placeholder="Search by name or country…"
                 autocomplete="off"
               />
             </div>
-            <ul class="dd-ul" id="to-ul"></ul>
+            <ul class="dd-list" id="to-list"></ul>
           </div>
         </div>
 
         <!-- RATE BAR -->
-        <div class="rate-bar">
-          <div class="rate-info">
-            <span class="rate-lbl">Exchange Rate</span>
-            <span class="rate-val" id="rate-val">Fetching rates…</span>
+        <div
+          class="rate-bar"
+          title="Current exchange rate between the two selected currencies"
+        >
+          <div class="rate-left">
+            <span class="rate-label">Exchange Rate</span>
+            <span class="rate-val" id="rate-val">Loading…</span>
           </div>
           <span class="rate-date" id="rate-date">—</span>
         </div>
       </div>
       <!-- /card -->
-
-      <!-- QUICK PAIRS -->
-      <div class="quick-section">
-        <span class="quick-title">⚡ Popular Pairs</span>
-        <div class="quick-grid" id="quick-grid"></div>
-      </div>
 
       <!-- SOCIALS -->
       <div class="socials">
@@ -311,21 +293,21 @@
           rel="noopener"
           class="soc soc-fb"
         >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path
               d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
             />
           </svg>
           shawnazd
         </a>
-        <div class="soc-sep"></div>
+        <div class="soc-div"></div>
         <a
           href="https://github.com/shawnazd"
           target="_blank"
           rel="noopener"
           class="soc soc-gh"
         >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path
               d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
             />
